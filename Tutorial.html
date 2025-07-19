@@ -1,0 +1,1550 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    * {
+  transition: all 0.2s;
+}
+
+    body {
+      /* Remove or reduce t        <div>
+          <h3>Step-by-Step Guidance</h3>
+          <p>Each lesson builds your skills from basics to advanced.</p>
+        </div>
+        <div>
+          <h3><a href="Student.html" style="color: #2c3e50; text-decoration: none;">Track Your Progress</a></h3>
+          <p>See which lessons you've completed and what's next.</p>
+        </div>
+      </div>y for a clearer background image */
+      background: url('student-coding.jpg') center center/cover no-repeat #f5f6fa;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      font-family: 'Montserrat', Arial, sans-serif;
+    }
+    .container {
+      display: flex;
+      min-height: 100vh;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .sidebar {
+      background: rgba(44, 62, 80, 0.92);
+      color: #fff;
+      padding: 30px 20px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      box-shadow: 2px 0 16px rgba(44,62,80,0.12);
+      border-radius: 12px 0 0 12px;
+      min-width: 220px;
+      max-width: 320px;
+      width: 22vw;
+    }
+    .sidebar-title {
+      font-size: 1.8em;
+      font-weight: bold;
+      margin-bottom: 40px;
+      letter-spacing: 1px;
+    }
+    .lesson-btn {
+      display: flex;
+      align-items: center;
+      padding: 10px 20px;
+      background-color: #2c3e50;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1em;
+      margin-bottom: 10px;
+      width: 100%;
+      text-align: left;
+    }
+    .lesson-btn img {
+      width: 32px;
+      height: 32px;
+      margin-right: 12px;
+    }
+    .lesson-btn:hover {
+      background-color: #34495e;
+      color: #fdcb6e;
+      transform: translateX(8px) scale(1.03);
+      transition: all 0.2s;
+    }
+    .main-content {
+      flex: 1 1 0%;
+      min-width: 0;
+      padding: 40px;
+      background: rgba(255,255,255,0.90);
+      box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+      border-radius: 0 12px 12px 0;
+      overflow-x: auto;
+    }
+    .home-btn {
+      display: inline-block;
+      margin-bottom: 24px;
+      background: #00b894;
+      color: #fff;
+      padding: 10px 28px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 1.1em;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+      transition: background 0.2s;
+    }
+    .home-btn:hover {
+      background: #0984e3;
+    }
+    .hero {
+      background: linear-gradient(rgba(44,62,80,0.88),rgba(44,62,80,0.88)), url('student-coding.jpg') center/cover no-repeat;
+      color: #fff;
+      text-align: center;
+      padding: 80px 20px 60px 20px;
+      border-radius: 16px;
+      margin-bottom: 40px;
+      box-shadow: 0 8px 32px rgba(44,62,80,0.18);
+      border: 2px solid #00b894;
+    }
+    .hero h1 {
+      font-size: 2.7em;
+      margin-bottom: 16px;
+      color: #fff;
+      text-shadow: 0 2px 8px rgba(44,62,80,0.4);
+    }
+    .hero p {
+      font-size: 1.3em;
+      margin-bottom: 24px;
+      color: #f1f2f6;
+      text-shadow: 0 1px 4px rgba(44,62,80,0.3);
+    }
+    .cta-btn {
+      background: #00b894;
+      color: #fff;
+      padding: 14px 36px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 1.2em;
+      font-weight: bold;
+      margin-top: 24px;
+      display: inline-block;
+      transition: background 0.2s;
+    }
+    .cta-btn:hover {
+      background: #0984e3;
+    }
+    .user-info {
+      margin-bottom: 40px;
+    }
+    .user-info h2 {
+      font-size: 1.8em;
+      margin: 0;
+      color: #2c3e50;
+    }
+    .user-info p {
+      font-size: 1.1em;
+      margin: 8px 0 0 0;
+      color: #34495e;
+    }
+    .features {
+      display: flex;
+      gap: 32px;
+      justify-content: center;
+      margin-bottom: 40px;
+    }
+    .features > div {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 12px rgba(44,62,80,0.08);
+      padding: 24px 20px;
+      min-width: 220px;
+      text-align: center;
+    }
+
+    /* Make container stack on small screens */
+@media (max-width: 900px) {
+  .container {
+    flex-direction: column;
+    height: auto;
+  }
+  .sidebar {
+    width: 100% !important;
+    min-width: 0;
+    max-width: 100%;
+    border-radius: 12px 12px 0 0;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: stretch;
+    justify-content: flex-start;
+    padding: 16px 10px;
+  }
+  .main-content {
+    border-radius: 0 0 12px 12px;
+    padding: 20px 8px;
+    width: 100% !important;
+    min-width: 0;
+  }
+}
+
+/* Make buttons and textareas full width on mobile */
+@media (max-width: 600px) {
+  .lesson-btn,
+  .home-btn,
+  .cta-btn,
+  textarea {
+    width: 100% !important;
+    font-size: 1em;
+  }
+  .hero {
+    padding: 40px 5px 30px 5px;
+    font-size: 1em;
+  }
+  .sidebar-title {
+    font-size: 1.2em;
+    margin-bottom: 20px;
+  }
+  .features > div {
+    min-width: unset;
+    padding: 16px 8px;
+  }
+}
+
+    /* Add this CSS to make lesson content flexible and responsive */
+
+  /* Make lesson content columns stack on small screens */
+  .lesson-flex-row {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .lesson-flex-col {
+    flex: 1 1 320px;
+    min-width: 260px;
+    max-width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 24px;
+  }
+
+  @media (max-width: 900px) {
+    .lesson-flex-row {
+      flex-direction: column;
+      gap: 0;
+    }
+    .lesson-flex-col {
+      min-width: 0;
+      width: 100%;
+      margin-bottom: 24px;
+    }
+  }
+
+  pre[id^="output"] {
+  background: #222;
+  color: #fff;
+  padding: 10px;
+  border-radius: 6px;
+  margin-top: 10px;
+  font-size: 1em;
+  font-family: monospace;
+  white-space: pre-wrap;      /* Allow long lines to wrap */
+  word-break: break-word;     /* Break long words if needed */
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+}
+  </style>
+  <script src="https://cdn.jsdelivr.net/pyodide/v0.25.1/full/pyodide.js"></script>
+</head>
+<body>
+  <div class="container">
+    <div class="sidebar">
+      <!-- Home button at the top -->
+      <a href="Home.html" class="home-btn">Home</a>
+      <div class="sidebar-title">Start Lessons</div>
+      <button class="lesson-btn" onclick="showLesson(1)">
+        <img src="icon1.jpg" alt="Lesson 1 Icon">Lesson 1
+      </button>
+      <button class="lesson-btn" onclick="showLesson(2)">
+        <img src="icon1.jpg" alt="Lesson 2 Icon">Lesson 2
+      </button>
+      <button class="lesson-btn" onclick="showLesson(3)">
+        <img src="icon1.jpg" alt="Lesson 3 Icon">Lesson 3
+      </button>
+      <button class="lesson-btn" onclick="showLesson(4)">
+        <img src="icon1.jpg" alt="Lesson 4 Icon">Lesson 4
+      </button>
+      <button class="lesson-btn" onclick="showLesson(5)">
+        <img src="icon1.jpg" alt="Lesson 5 Icon">Lesson 5
+      </button>
+      <button class="lesson-btn" onclick="showLesson(6)">
+        <img src="icon1.jpg" alt="Lesson 6 Icon">Lesson 6
+      </button>
+      <button class="lesson-btn" onclick="showLesson(7)">
+        <img src="icon1.jpg" alt="Lesson 7 Icon">Lesson 7
+      </button>
+      <button class="lesson-btn" onclick="showLesson(8)">
+        <img src="icon1.jpg" alt="Lesson 8 Icon">Lesson 8
+      </button>
+      <a href="HelpMe.html" class="home-btn" style="background:#6c5ce7;margin-top:24px;">Help Me</a>
+      <!-- Replace your current Announcement link in the sidebar with this: -->
+<a href="javascript:void(0);" class="home-btn" style="background:#e17055;margin-top:16px;" onclick="showAnnouncements();">
+  Announcement
+</a>
+    </div>
+    <div class="main-content" id="mainContent">
+      <div class="hero">
+        <h1>Welcome to Python Learning Hub</h1>
+        <p>Master Python step by step with interactive lessons and live practice!</p>
+        <a href="javascript:void(0);" class="cta-btn" onclick="showLesson(1)">Start Learning</a>
+      </div>
+      <div class="user-info">
+        <h2>Welcome, <span id="username"></span>!</h2>
+        <p>Your progress: <strong>3/7 lessons completed</strong></p>
+      </div>
+      <h2>Welcome</h2>
+      <p>Select a lesson to view its content.</p>
+      <div class="features">
+        <div style="background: linear-gradient(135deg, #00b894, #00a085); color: white; border-radius: 16px; box-shadow: 0 8px 25px rgba(0, 184, 148, 0.3); padding: 32px 24px; min-width: 220px; text-align: center; transform: translateY(0); transition: all 0.3s ease; cursor: pointer;" onmouseover="this.style.transform='translateY(-8px)'; this.style.boxShadow='0 12px 35px rgba(0, 184, 148, 0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 25px rgba(0, 184, 148, 0.3)'">
+          <div style="font-size: 3em; margin-bottom: 16px;">🧠</div>
+          <h3><a href="Questions.html" style="color: white; text-decoration: none; font-size: 1.4em; font-weight: bold;">Test Your Skills</a></h3>
+          <p style="margin: 12px 0 20px 0; font-size: 1.1em; opacity: 0.95;">Challenge yourself with interactive quizzes and coding problems to master Python!</p>
+          <div style="background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 25px; display: inline-block; font-weight: bold;">Start Quiz →</div>
+        </div>
+        
+        <div style="background: linear-gradient(135deg, #0984e3, #0770c4); color: white; border-radius: 16px; box-shadow: 0 8px 25px rgba(9, 132, 227, 0.3); padding: 32px 24px; min-width: 220px; text-align: center; transform: translateY(0); transition: all 0.3s ease; cursor: pointer;" onmouseover="this.style.transform='translateY(-8px)'; this.style.boxShadow='0 12px 35px rgba(9, 132, 227, 0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 25px rgba(9, 132, 227, 0.3)'">
+          <div style="font-size: 3em; margin-bottom: 16px;">🚀</div>
+          <h3><a href="https://www.w3schools.com/python/" target="_blank" style="color: white; text-decoration: none; font-size: 1.4em; font-weight: bold;">Extra Practice</a></h3>
+          <p style="margin: 12px 0 20px 0; font-size: 1.1em; opacity: 0.95;">Boost your skills with thousands of additional exercises from W3Schools!</p>
+          <div style="background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 25px; display: inline-block; font-weight: bold;">Practice Now →</div>
+        </div>
+        
+        <div style="background: linear-gradient(135deg, #6c5ce7, #5f4dd1); color: white; border-radius: 16px; box-shadow: 0 8px 25px rgba(108, 92, 231, 0.3); padding: 32px 24px; min-width: 220px; text-align: center; transform: translateY(0); transition: all 0.3s ease; cursor: pointer;" onmouseover="this.style.transform='translateY(-8px)'; this.style.boxShadow='0 12px 35px rgba(108, 92, 231, 0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 25px rgba(108, 92, 231, 0.3)'">
+          <div style="font-size: 3em; margin-bottom: 16px;">📊</div>
+          <h3><a href="Student.html" style="color: white; text-decoration: none; font-size: 1.4em; font-weight: bold;">Your Progress</a></h3>
+          <p style="margin: 12px 0 20px 0; font-size: 1.1em; opacity: 0.95;">Track completed lessons, achievements, and see what's coming next!</p>
+          <div style="background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 25px; display: inline-block; font-weight: bold;">View Dashboard →</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <span id="welcome-user" style="position:absolute;top:24px;right:32px;font-size:1.1em;color:#0984e3;font-weight:bold;"></span>
+<button id="logout-btn" style="position:absolute;top:50px;right:32px;font-size:1em;padding:6px 16px;border-radius:6px;background:#e17055;color:#fff;border:none;cursor:pointer;display:none;">Log Out</button>
+<!-- Add this Login button next to your logout button, near the top right of the page -->
+<button id="login-btn" style="position:absolute;top:24px;right:200px;font-size:1em;padding:6px 16px;border-radius:6px;background:#00b894;color:#fff;border:none;cursor:pointer;">Log In</button>
+
+  <script>
+    let pyodideReadyPromise = loadPyodide();
+    // JavaScript to link lesson buttons to main content with live practice input box for every lesson
+function showLesson(lessonNumber) {
+  const content = {
+    1: `
+    <div class="lesson-flex-row">
+      <div class="lesson-flex-col" style="background: #fff; padding: 24px; border-radius: 8px; box-shadow: 0 2px 8px #eee;">
+        <h2>Lesson 1: Python Basics</h2>
+        <h3>1. Basic Syntax and Output</h3>
+        <pre><code>print("Hello, World!")</code></pre>
+        <h3>2. Variables and Data Types</h3>
+        <pre><code>name = "Alice"
+age = 30
+print(name, "is", age, "years old.")</code></pre>
+        <h3>3. Comments</h3>
+        <pre><code># This is a comment
+print("Comments are ignored by Python")</code></pre>
+        <h3>4. Arithmetic Operations</h3>
+        <pre><code>x = 10
+y = 3
+print(x + y)  # Output: 13
+print(x * y)  # Output: 30
+print(x % y)  # Output: 1</code></pre>
+        <h3>5. String Manipulation</h3>
+        <pre><code>greeting = "Hello"
+name = "Sam"
+message = greeting + ", " + name + "!"
+print(message)  # Output: Hello, Sam!</code></pre>
+        <h3>6. Input from User</h3>
+        <pre><code># Uncomment the next two lines to use input in a real Python environment
+# name = input("What is your name? ")
+# print("Hi,", name)</code></pre>
+        <h3>7. Type Conversion</h3>
+        <pre><code>num_str = "42"
+num_int = int(num_str)
+print(num_int + 8)  # Output: 50</code></pre>
+      </div>
+      <div class="lesson-flex-col" style="background: #f8f8f8; padding: 24px; border-radius: 8px; box-shadow: 0 2px 8px #eee;">
+        <h3>Live Practice</h3>
+        <textarea id="practice1" rows="10" style="width:100%;font-family:monospace;" placeholder="# Practice Python basics here!
+# Try creating variables and printing them
+
+name = 'Your Name'
+age = 25
+print('Hello,', name)
+print('You are', age, 'years old')"></textarea>
+        <br>
+        <button onclick="runPractice('practice1', 'output1')" style="background:#b2bec3;color:#2d3436;border:none;border-radius:6px;padding:8px 16px;cursor:pointer;">Show Output</button>
+        <button onclick="clearPractice('practice1', 'output1')" style="margin-left:8px;background:#b2bec3;color:#2d3436;border:none;border-radius:6px;padding:8px 16px;cursor:pointer;">Clear</button>
+        <pre id="output1" style="background:#222;color:#fff;padding:10px;border-radius:6px;margin-top:10px;">Output will appear here (Python code is not executed, but you can use this area for practice and notes).</pre>
+        
+        <div style="margin-top:16px;">
+          <strong>Practice Exercises:</strong>
+          <div style="background:#f4f4f4;padding:12px;border-radius:6px;margin-top:8px;">
+            <p><strong>Exercise 1:</strong> Create a variable with your name and print a greeting message</p>
+            <p><strong>Exercise 2:</strong> Calculate and print the result of 15 + 27</p>
+            <p><strong>Exercise 3:</strong> Create two string variables and combine them with a space</p>
+            <p><strong>Exercise 4:</strong> Convert the string "123" to an integer and add 50 to it</p>
+          </div>
+        </div>
+        
+        <div style="margin-top:16px;">
+          <strong>Key Concepts:</strong>
+          <div style="background:#e8f4fd;padding:12px;border-radius:6px;border-left:4px solid #0984e3;">
+            <p style="margin:0;color:#0984e3;">
+              <strong>Variables:</strong> Store data using names like name = "Alice"<br>
+              <strong>Data Types:</strong> Strings (text), integers (numbers), floats (decimals)<br>
+              <strong>Print Function:</strong> Use print() to display output<br>
+              <strong>Comments:</strong> Use # to add explanatory notes to your code
+            </p>
+          </div>
+        </div>
+        
+        <div style="margin-top:16px;">
+          <strong>Common Mistakes:</strong>
+          <div style="background:#fff3cd;padding:12px;border-radius:6px;border-left:4px solid #ffc107;">
+            <p style="margin:0;color:#856404;">
+              ⚠️ <strong>Quotes:</strong> Remember to use quotes around text: "Hello"<br>
+              ⚠️ <strong>Case Sensitive:</strong> Python cares about uppercase/lowercase<br>
+              ⚠️ <strong>Indentation:</strong> Python uses spaces/tabs to organize code<br>
+              ⚠️ <strong>Spelling:</strong> Function names must be spelled exactly right
+            </p>
+          </div>
+        </div>
+        
+        <div style="margin-top:16px;">
+          <strong>Sample Solutions:</strong>
+          <pre style="background:#f4f4f4;padding:10px;border-radius:6px;font-size:0.9em;"># Exercise 1
+name = "John"
+print("Hello,", name, "!")
+
+# Exercise 2
+result = 15 + 27
+print("15 + 27 =", result)
+
+# Exercise 3
+first = "Python"
+second = "Programming"
+combined = first + " " + second
+print(combined)</pre>
+        </div>
+      </div>
+    </div>
+    `,
+    2: `
+    <div class="lesson-flex-row">
+      <div class="lesson-flex-col" style="background: #fff; padding: 24px; border-radius: 8px; box-shadow: 0 2px 8px #eee;">
+        <h2>Lesson 2: Conditional Statements</h2>
+        <h3>Example 1: Basic If-Elif-Else</h3>
+        <pre><code>score = 75
+if score >= 90:
+    print("Grade: A")
+elif score >= 80:
+    print("Grade: B")
+else:
+    print("Grade: C")</code></pre>
+        <h3>Example 2: Check if a number is positive, negative, or zero</h3>
+        <pre><code>num = -5
+if num > 0:
+    print("Positive")
+elif num == 0:
+    print("Zero")
+else:
+    print("Negative")</code></pre>
+        <h3>Example 3: Even or Odd</h3>
+        <pre><code>number = 8
+if number % 2 == 0:
+    print("Even")
+else:
+    print("Odd")</code></pre>
+        <h3>Example 4: Nested Conditionals</h3>
+        <pre><code>age = 20
+if age >= 18:
+    if age < 65:
+        print("Adult")
+    else:
+        print("Senior")
+else:
+    print("Minor")</code></pre>
+      </div>
+      <div class="lesson-flex-col" style="background: #f8f8f8; padding: 24px; border-radius: 8px; box-shadow: 0 2px 8px #eee;">
+        <h3>Live Practice</h3>
+        <textarea id="practice2" rows="10" style="width:100%;font-family:monospace;" placeholder="# Practice conditional statements here!
+# Try writing if-elif-else conditions
+
+score = 85
+if score >= 90:
+    grade = 'A'
+elif score >= 80:
+    grade = 'B'
+else:
+    grade = 'C'
+print('Your grade is', grade)"></textarea>
+        <br>
+        <button onclick="runPractice('practice2', 'output2')" style="background:#b2bec3;color:#2d3436;border:none;border-radius:6px;padding:8px 16px;cursor:pointer;">Show Output</button>
+        <button onclick="clearPractice('practice2', 'output2')" style="margin-left:8px;background:#b2bec3;color:#2d3436;border:none;border-radius:6px;padding:8px 16px;cursor:pointer;">Clear</button>
+        <pre id="output2" style="background:#222;color:#fff;padding:10px;border-radius:6px;margin-top:10px;">Output will appear here (Python code is not executed, but you can use this area for practice and notes).</pre>
+        
+        <div style="margin-top:16px;">
+          <strong>Practice Exercises:</strong>
+          <div style="background:#f4f4f4;padding:12px;border-radius:6px;margin-top:8px;">
+            <p><strong>Exercise 1:</strong> Write a program that checks if a number is positive, negative, or zero</p>
+            <p><strong>Exercise 2:</strong> Create a variable with your exam score and print your grade (A, B, C, D, F)</p>
+            <p><strong>Exercise 3:</strong> Check if a person can vote (age >= 18) or drive (age >= 16)</p>
+            <p><strong>Exercise 4:</strong> Write a program that prints "Even" or "Odd" based on a number</p>
+          </div>
+        </div>
+        
+        <div style="margin-top:16px;">
+          <strong>Key Concepts:</strong>
+          <div style="background:#e8f4fd;padding:12px;border-radius:6px;border-left:4px solid #0984e3;">
+            <p style="margin:0;color:#0984e3;">
+              <strong>if statement:</strong> Execute code only if condition is True<br>
+              <strong>elif statement:</strong> Check additional conditions<br>
+              <strong>else statement:</strong> Execute code when all conditions are False<br>
+              <strong>Comparison operators:</strong> ==, !=, >, <, >=, <= to compare values
+            </p>
+          </div>
+        </div>
+        
+        <div style="margin-top:16px;">
+          <strong>Common Mistakes:</strong>
+          <div style="background:#fff3cd;padding:12px;border-radius:6px;border-left:4px solid #ffc107;">
+            <p style="margin:0;color:#856404;">
+              ⚠️ <strong>Missing Colons:</strong> Don't forget the colon (:) after if/elif/else<br>
+              ⚠️ <strong>Indentation:</strong> Code inside if blocks must be indented<br>
+              ⚠️ <strong>Assignment vs Comparison:</strong> Use == for comparison, = for assignment<br>
+              ⚠️ <strong>Logic Errors:</strong> Check your conditions carefully
+            </p>
+          </div>
+        </div>
+        
+        <div style="margin-top:16px;">
+          <strong>Sample Solutions:</strong>
+          <pre style="background:#f4f4f4;padding:10px;border-radius:6px;font-size:0.9em;"># Exercise 1
+num = -10
+if num > 0:
+    print("Positive")
+elif num == 0:
+    print("Zero")
+else:
+    print("Negative")
+
+# Exercise 2
+score = 82
+if score >= 90:
+    print("Grade: A")
+elif score >= 80:
+    print("Grade: B")
+elif score >= 70:
+    print("Grade: C")
+elif score >= 60:
+    print("Grade: D")
+else:
+    print("Grade: F")</pre>
+        </div>
+      </div>
+    </div>
+    `,
+    3: `
+    <div class="lesson-flex-row">
+      <div class="lesson-flex-col" style="background: #fff; padding: 24px; border-radius: 8px; box-shadow: 0 2px 8px #eee;">
+        <h2>Lesson 3: Loops</h2>
+        <h3>Example 1: For Loop Over a List</h3>
+        <pre><code>fruits = ["apple", "banana", "cherry"]
+for fruit in fruits:
+    print(fruit)</code></pre>
+        <h3>Example 2: While Loop</h3>
+        <pre><code>count = 0
+while count < 5:
+    print(count)
+    count += 1</code></pre>
+        <h3>Example 3: For Loop with Range</h3>
+        <pre><code>for i in range(3):
+    print("Iteration", i)</code></pre>
+        <h3>Example 4: Looping with Break</h3>
+        <pre><code>for num in range(10):
+    if num == 5:
+        break
+    print(num)</code></pre>
+        <h3>Example 5: Looping with Continue</h3>
+        <pre><code>for num in range(5):
+    if num == 2:
+        continue
+    print(num)</code></pre>
+        <h3>Example 6: Nested Loops</h3>
+        <pre><code>for i in range(2):
+    for j in range(3):
+        print("i =", i, ", j =", j)</code></pre>
+      </div>
+      <div class="lesson-flex-col" style="background: #f8f8f8; padding: 24px; border-radius: 8px; box-shadow: 0 2px 8px #eee;">
+        <h3>Live Practice</h3>
+        <textarea id="practice3" rows="10" style="width:100%;font-family:monospace;" placeholder="# Practice loops here!
+# Try writing for and while loops
+
+# For loop example
+for i in range(5):
+    print('Hello', i)
+
+# While loop example
+count = 0
+while count < 3:
+    print('Count is', count)
+    count += 1"></textarea>
+        <br>
+        <button onclick="runPractice('practice3', 'output3')" style="background:#b2bec3;color:#2d3436;border:none;border-radius:6px;padding:8px 16px;cursor:pointer;">Show Output</button>
+        <button onclick="clearPractice('practice3', 'output3')" style="margin-left:8px;background:#b2bec3;color:#2d3436;border:none;border-radius:6px;padding:8px 16px;cursor:pointer;">Clear</button>
+        <pre id="output3" style="background:#222;color:#fff;padding:10px;border-radius:6px;margin-top:10px;">Output will appear here (Python code is not executed, but you can use this area for practice and notes).</pre>
+        
+        <div style="margin-top:16px;">
+          <strong>Practice Exercises:</strong>
+          <div style="background:#f4f4f4;padding:12px;border-radius:6px;margin-top:8px;">
+            <p><strong>Exercise 1:</strong> Print numbers from 1 to 10 using a for loop</p>
+            <p><strong>Exercise 2:</strong> Create a while loop that counts down from 5 to 1</p>
+            <p><strong>Exercise 3:</strong> Loop through a list of your favorite foods and print each one</p>
+            <p><strong>Exercise 4:</strong> Use nested loops to create a 3x3 multiplication table</p>
+          </div>
+        </div>
+        
+        <div style="margin-top:16px;">
+          <strong>Key Concepts:</strong>
+          <div style="background:#e8f4fd;padding:12px;border-radius:6px;border-left:4px solid #0984e3;">
+            <p style="margin:0;color:#0984e3;">
+              <strong>for loop:</strong> Iterate over sequences (lists, strings, ranges)<br>
+              <strong>while loop:</strong> Repeat while a condition is True<br>
+              <strong>range():</strong> Generate sequences of numbers<br>
+              <strong>break:</strong> Exit the loop early<br>
+              <strong>continue:</strong> Skip to the next iteration
+            </p>
+          </div>
+        </div>
+        
+        <div style="margin-top:16px;">
+          <strong>Common Mistakes:</strong>
+          <div style="background:#fff3cd;padding:12px;border-radius:6px;border-left:4px solid #ffc107;">
+            <p style="margin:0;color:#856404;">
+              ⚠️ <strong>Infinite Loops:</strong> Make sure while loop conditions can become False<br>
+              ⚠️ <strong>Indentation:</strong> Loop body must be properly indented<br>
+              ⚠️ <strong>Off-by-One Errors:</strong> Check your range() parameters carefully<br>
+              ⚠️ <strong>Modifying Lists:</strong> Be careful when changing lists while looping
+            </p>
+          </div>
+        </div>
+        
+        <div style="margin-top:16px;">
+          <strong>Sample Solutions:</strong>
+          <pre style="background:#f4f4f4;padding:10px;border-radius:6px;font-size:0.9em;"># Exercise 1
+for i in range(1, 11):
+    print(i)
+
+# Exercise 2
+count = 5
+while count >= 1:
+    print(count)
+    count -= 1
+
+# Exercise 3
+foods = ["pizza", "pasta", "salad"]
+for food in foods:
+    print("I like", food)</pre>
+        </div>
+      </div>
+    </div>
+    `,
+    4: `
+    <div class="lesson-flex-row">
+      <div class="lesson-flex-col" style="background: #fff; padding: 24px; border-radius: 8px; box-shadow: 0 2px 8px #eee;">
+        <h2>Lesson 4: Functions</h2>
+        <h3>Example 1: Simple Function</h3>
+        <pre><code>def greet(name):
+    print("Hello, " + name + "!")
+greet("Bob")  # Output: Hello, Bob!</code></pre>
+        <h3>Example 2: Function with Return Value</h3>
+        <pre><code>def add(a, b):
+    return a + b
+result = add(5, 3)
+print(result)  # Output: 8</code></pre>
+        <h3>Example 3: Function with Default Parameter</h3>
+        <pre><code>def greet(name="friend"):
+    print("Hello,", name)
+greet()         # Output: Hello, friend
+greet("Alice")  # Output: Hello, Alice</code></pre>
+        <h3>Example 4: Function with Multiple Parameters</h3>
+        <pre><code>def multiply(x, y, z):
+    return x * y * z
+result = multiply(2, 3, 4)
+print(result)  # Output: 24</code></pre>
+        <h3>Example 5: Function Calling Another Function</h3>
+        <pre><code>def square(n):
+    return n * n
+def print_square(n):
+    print(square(n))
+print_square(5)  # Output: 25</code></pre>
+      </div>
+      <div class="lesson-flex-col" style="background: #f8f8f8; padding: 24px; border-radius: 8px; box-shadow: 0 2px 8px #eee;">
+        <h3>Live Practice</h3>
+        <textarea id="practice4" rows="10" style="width:100%;font-family:monospace;" placeholder="# Practice functions here!
+# Try defining and calling your own functions
+
+# Example: Simple function
+def greet():
+    print('Hello, world!')
+
+greet()
+
+# Example: Function with parameters
+def add(a, b):
+    return a + b
+
+result = add(10, 5)
+print('The sum is', result)"></textarea>
+        <br>
+        <button onclick="runPractice('practice4', 'output4')" style="background:#b2bec3;color:#2d3436;border:none;border-radius:6px;padding:8px 16px;cursor:pointer;">Show Output</button>
+        <button onclick="clearPractice('practice4', 'output4')" style="margin-left:8px;background:#b2bec3;color:#2d3436;border:none;border-radius:6px;padding:8px 16px;cursor:pointer;">Clear</button>
+        <pre id="output4" style="background:#222;color:#fff;padding:10px;border-radius:6px;margin-top:10px;">Output will appear here (Python code is not executed, but you can use this area for practice and notes).</pre>
+        
+        <div style="margin-top:16px;">
+          <strong>Practice Exercises:</strong>
+          <div style="background:#f4f4f4;padding:12px;border-radius:6px;margin-top:8px;">
+            <p><strong>Exercise 1:</strong> Create a function that takes a name and prints a personalized greeting</p>
+            <p><strong>Exercise 2:</strong> Write a function that calculates the area of a rectangle (length × width)</p>
+            <p><strong>Exercise 3:</strong> Make a function that checks if a number is even or odd</p>
+            <p><strong>Exercise 4:</strong> Create a function that finds the maximum of three numbers</p>
+          </div>
+        </div>
+        
+        <div style="margin-top:16px;">
+          <strong>Key Concepts:</strong>
+          <div style="background:#e8f4fd;padding:12px;border-radius:6px;border-left:4px solid #0984e3;">
+            <p style="margin:0;color:#0984e3;">
+              <strong>def keyword:</strong> Define a function<br>
+              <strong>Parameters:</strong> Variables that receive values when function is called<br>
+              <strong>return statement:</strong> Send a value back from the function<br>
+              <strong>Function call:</strong> Execute the function with specific arguments<br>
+              <strong>Default parameters:</strong> Provide default values for parameters
+            </p>
+          </div>
+        </div>
+        
+        <div style="margin-top:16px;">
+          <strong>Common Mistakes:</strong>
+          <div style="background:#fff3cd;padding:12px;border-radius:6px;border-left:4px solid #ffc107;">
+            <p style="margin:0;color:#856404;">
+              ⚠️ <strong>Missing Parentheses:</strong> Don't forget () when calling functions<br>
+              ⚠️ <strong>Indentation:</strong> Function body must be indented<br>
+              ⚠️ <strong>Return vs Print:</strong> return sends value back, print displays it<br>
+              ⚠️ <strong>Scope:</strong> Variables inside functions are local to that function
+            </p>
+          </div>
+        </div>
+        
+        <div style="margin-top:16px;">
+          <strong>Sample Solutions:</strong>
+          <pre style="background:#f4f4f4;padding:10px;border-radius:6px;font-size:0.9em;"># Exercise 1
+def greet_user(name):
+    print(f"Hello, {name}! Welcome!")
+greet_user("Alice")
+
+# Exercise 2
+def rectangle_area(length, width):
+    return length * width
+area = rectangle_area(5, 3)
+print("Area:", area)
+
+# Exercise 3
+def check_even_odd(num):
+    if num % 2 == 0:
+        return "Even"
+    else:
+        return "Odd"
+print(check_even_odd(7))</pre>
+        </div>
+      </div>
+    </div>
+    `,
+    5: `
+    <div class="lesson-flex-row">
+      <div class="lesson-flex-col" style="background: #fff; padding: 24px; border-radius: 8px; box-shadow: 0 2px 8px #eee;">
+        <h2>Lesson 5: Lists</h2>
+        <h3>Example 1: Basic List Operations</h3>
+        <pre><code>fruits = ["apple", "banana", "cherry"]
+print(fruits[0])  # apple
+fruits.append("orange")
+fruits.remove("banana")
+print(fruits)</code></pre>
+        <h3>Example 2: List Length and Indexing</h3>
+        <pre><code>numbers = [1, 2, 3, 4, 5]
+print(len(numbers))  # Output: 5
+print(numbers[-1])   # Output: 5 (last element)</code></pre>
+        <h3>Example 3: Looping Through a List</h3>
+        <pre><code>colors = ["red", "green", "blue"]
+for color in colors:
+    print(color)</code></pre>
+        <h3>Example 4: List Slicing</h3>
+        <pre><code>numbers = [0, 1, 2, 3, 4, 5]
+print(numbers[1:4])   # [1, 2, 3]
+print(numbers[:3])    # [0, 1, 2]
+print(numbers[3:])    # [3, 4, 5]</code></pre>
+        <h3>Example 5: List Methods</h3>
+        <pre><code>my_list = [3, 1, 4, 1, 5]
+my_list.sort()        # Sort the list
+print(my_list)        # [1, 1, 3, 4, 5]
+my_list.reverse()     # Reverse the list
+print(my_list)        # [5, 4, 3, 1, 1]</code></pre>
+        <h3>Example 6: List Comprehension</h3>
+        <pre><code>squares = [x*x for x in range(5)]
+print(squares)  # Output: [0, 1, 4, 9, 16]</code></pre>
+      </div>
+      <div class="lesson-flex-col" style="background: #f8f8f8; padding: 24px; border-radius: 8px; box-shadow: 0 2px 8px #eee;">
+        <h3>Live Practice</h3>
+        <textarea id="practice5" rows="10" style="width:100%;font-family:monospace;" placeholder="# Practice lists here!
+# Try creating and manipulating lists
+
+# Example: Basic list operations
+fruits = ['apple', 'banana', 'cherry']
+fruits.append('orange')
+print(fruits)
+
+# Example: List slicing
+numbers = [0, 1, 2, 3, 4, 5]
+print(numbers[1:4])"></textarea>
+        <br>
+        <button onclick="runPractice('practice5', 'output5')" style="background:#b2bec3;color:#2d3436;border:none;border-radius:6px;padding:8px 16px;cursor:pointer;">Show Output</button>
+        <button onclick="clearPractice('practice5', 'output5')" style="margin-left:8px;background:#b2bec3;color:#2d3436;border:none;border-radius:6px;padding:8px 16px;cursor:pointer;">Clear</button>
+        <pre id="output5" style="background:#222;color:#fff;padding:10px;border-radius:6px;margin-top:10px;">Output will appear here (Python code is not executed, but you can use this area for practice and notes).</pre>
+        
+        <div style="margin-top:16px;">
+          <strong>Practice Exercises:</strong>
+          <div style="background:#f4f4f4;padding:12px;border-radius:6px;margin-top:8px;">
+            <p><strong>Exercise 1:</strong> Create a list of your favorite movies and print each one</p>
+            <p><strong>Exercise 2:</strong> Make a list of numbers 1-10, then print only the first 5</p>
+            <p><strong>Exercise 3:</strong> Create a shopping list, add 3 items, then remove one</p>
+            <p><strong>Exercise 4:</strong> Use list comprehension to create a list of even numbers from 0-20</p>
+          </div>
+        </div>
+        
+        <div style="margin-top:16px;">
+          <strong>Key Concepts:</strong>
+          <div style="background:#e8f4fd;padding:12px;border-radius:6px;border-left:4px solid #0984e3;">
+            <p style="margin:0;color:#0984e3;">
+              <strong>Lists:</strong> Ordered collections that can be changed<br>
+              <strong>Indexing:</strong> Access elements with [0], [1], [-1] (last)<br>
+              <strong>Slicing:</strong> Get portions with [start:end]<br>
+              <strong>Methods:</strong> append(), remove(), sort(), reverse()<br>
+              <strong>List Comprehension:</strong> Create lists with [expression for item in iterable]
+            </p>
+          </div>
+        </div>
+        
+        <div style="margin-top:16px;">
+          <strong>Common Mistakes:</strong>
+          <div style="background:#fff3cd;padding:12px;border-radius:6px;border-left:4px solid #ffc107;">
+            <p style="margin:0;color:#856404;">
+              ⚠️ <strong>Index Errors:</strong> Accessing an index that doesn't exist<br>
+              ⚠️ <strong>Mutating While Iterating:</strong> Don't change list size during loops<br>
+              ⚠️ <strong>Slice Notation:</strong> Remember [start:end] doesn't include end<br>
+              ⚠️ <strong>List vs String:</strong> Lists use [], strings use ""
+            </p>
+          </div>
+        </div>
+        
+        <div style="margin-top:16px;">
+          <strong>Sample Solutions:</strong>
+          <pre style="background:#f4f4f4;padding:10px;border-radius:6px;font-size:0.9em;"># Exercise 1
+movies = ["Avatar", "Titanic", "Star Wars"]
+for movie in movies:
+    print("I like", movie)
+
+# Exercise 2
+numbers = list(range(1, 11))
+print(numbers[:5])  # [1, 2, 3, 4, 5]
+
+# Exercise 3
+shopping = ["milk", "bread", "eggs"]
+shopping.append("cheese")
+shopping.remove("bread")
+print(shopping)
+
+# Exercise 4
+evens = [x for x in range(21) if x % 2 == 0]
+print(evens)</pre>
+        </div>
+      </div>
+    </div>
+    `,
+    6: `
+    <div class="lesson-flex-row">
+      <div class="lesson-flex-col" style="background: #fff; padding: 24px; border-radius: 8px; box-shadow: 0 2px 8px #eee;">
+        <h2>Lesson 6: Dictionaries</h2>
+        <h3>Example 1: Basic Dictionary Operations</h3>
+        <pre><code>person = {"name": "Alice", "age": 25, "city": "New York"}
+print(person["name"])  # Alice
+person["email"] = "alice@example.com"
+del person["city"]
+print(person)</code></pre>
+        <h3>Example 2: Looping Through a Dictionary</h3>
+        <pre><code>for key in person:
+    print(key, ":", person[key])
+
+# Alternative method
+for key, value in person.items():
+    print(key, "->", value)</code></pre>
+        <h3>Example 3: Using .get() Method</h3>
+        <pre><code>print(person.get("age"))         # 25
+print(person.get("country"))     # None (no error)
+print(person.get("country", "USA"))  # USA (default value)</code></pre>
+        <h3>Example 4: Checking for Keys</h3>
+        <pre><code>if "email" in person:
+    print("Email is:", person["email"])
+else:
+    print("No email found")</code></pre>
+        <h3>Example 5: Dictionary Methods</h3>
+        <pre><code>print(len(person))           # Number of key-value pairs
+print(list(person.keys()))   # List of keys
+print(list(person.values())) # List of values
+print(list(person.items()))  # List of key-value pairs</code></pre>
+        <h3>Example 6: Nested Dictionaries</h3>
+        <pre><code>students = {
+    "john": {"age": 20, "grade": "A"},
+    "mary": {"age": 19, "grade": "B"}
+}
+print(students["john"]["grade"])  # A</code></pre>
+      </div>
+      <div class="lesson-flex-col" style="background: #f8f8f8; padding: 24px; border-radius: 8px; box-shadow: 0 2px 8px #eee;">
+        <h3>Live Practice</h3>
+        <textarea id="practice6" rows="10" style="width:100%;font-family:monospace;" placeholder="# Practice dictionaries here!
+# Try creating and using dictionaries
+
+# Example: Basic dictionary operations
+person = {'name': 'John', 'age': 30}
+print(person['name'])
+person['email'] = 'john@example.com'
+print(person)
+
+# Example: Looping through a dictionary
+for key, value in person.items():
+    print(key, '->', value)"></textarea>
+        <br>
+        <button onclick="runPractice('practice6', 'output6')" style="background:#b2bec3;color:#2d3436;border:none;border-radius:6px;padding:8px 16px;cursor:pointer;">Show Output</button>
+        <button onclick="clearPractice('practice6', 'output6')" style="margin-left:8px;background:#b2bec3;color:#2d3436;border:none;border-radius:6px;padding:8px 16px;cursor:pointer;">Clear</button>
+        <pre id="output6" style="background:#222;color:#fff;padding:10px;border-radius:6px;margin-top:10px;">Output will appear here (Python code is not executed, but you can use this area for practice and notes).</pre>
+        
+        <div style="margin-top:16px;">
+          <strong>Practice Exercises:</strong>
+          <div style="background:#f4f4f4;padding:12px;border-radius:6px;margin-top:8px;">
+            <p><strong>Exercise 1:</strong> Create a dictionary with your personal info (name, age, city)</p>
+            <p><strong>Exercise 2:</strong> Make a dictionary of your favorite foods and their prices</p>
+            <p><strong>Exercise 3:</strong> Create a phone book dictionary and add/remove contacts</p>
+            <p><strong>Exercise 4:</strong> Build a nested dictionary representing a simple student database</p>
+          </div>
+        </div>
+        
+        <div style="margin-top:16px;">
+          <strong>Key Concepts:</strong>
+          <div style="background:#e8f4fd;padding:12px;border-radius:6px;border-left:4px solid #0984e3;">
+            <p style="margin:0;color:#0984e3;">
+              <strong>Dictionaries:</strong> Key-value pairs, unordered collections<br>
+              <strong>Keys:</strong> Must be unique and immutable (strings, numbers)<br>
+              <strong>Values:</strong> Can be any data type<br>
+              <strong>Methods:</strong> .get(), .keys(), .values(), .items()<br>
+              <strong>Nested Dictionaries:</strong> Dictionaries inside dictionaries
+            </p>
+          </div>
+        </div>
+        
+        <div style="margin-top:16px;">
+          <strong>Common Mistakes:</strong>
+          <div style="background:#fff3cd;padding:12px;border-radius:6px;border-left:4px solid #ffc107;">
+            <p style="margin:0;color:#856404;">
+              ⚠️ <strong>KeyError:</strong> Accessing a key that doesn't exist (use .get() instead)<br>
+              ⚠️ <strong>Mutable Keys:</strong> Don't use lists as keys, use tuples instead<br>
+              ⚠️ <strong>Syntax:</strong> Use {}, not [] for dictionaries<br>
+              ⚠️ <strong>Key Types:</strong> Keys are case-sensitive strings
+            </p>
+          </div>
+        </div>
+        
+        <div style="margin-top:16px;">
+          <strong>Sample Solutions:</strong>
+          <pre style="background:#f4f4f4;padding:10px;border-radius:6px;font-size:0.9em;"># Exercise 1
+me = {"name": "Alice", "age": 25, "city": "Boston"}
+print("My info:", me)
+
+# Exercise 2
+foods = {"pizza": 12.99, "burger": 8.50, "salad": 7.25}
+print("Pizza costs:", foods["pizza"])
+
+# Exercise 3
+phonebook = {"mom": "555-1234", "dad": "555-5678"}
+phonebook["friend"] = "555-9999"
+del phonebook["dad"]
+print(phonebook)
+
+# Exercise 4
+students = {
+    "alice": {"grade": 85, "subject": "Math"},
+    "bob": {"grade": 92, "subject": "Science"}
+}
+print(students["alice"]["grade"])</pre>
+        </div>
+      </div>
+    </div>
+    `,
+    7: `
+    <div class="lesson-flex-row">
+      <div class="lesson-flex-col" style="background: #fff; padding: 24px; border-radius: 8px; box-shadow: 0 2px 8px #eee;">
+        <h2>Lesson 7: Arrays (Using NumPy)</h2>
+        <h3>1. Import NumPy and Create Arrays</h3>
+        <pre><code>import numpy as np
+
+# Create arrays from lists
+arr1 = np.array([1, 2, 3, 4, 5])
+arr2 = np.array([[1, 2, 3], [4, 5, 6]])
+print(arr1)  # [1 2 3 4 5]
+print(arr2)  # [[1 2 3]
+             #  [4 5 6]]</code></pre>
+        
+        <h3>2. Array Properties</h3>
+        <pre><code>print(arr1.shape)   # (5,) - shape of array
+print(arr2.shape)   # (2, 3) - 2 rows, 3 columns
+print(arr1.dtype)   # int64 - data type
+print(arr1.size)    # 5 - total number of elements</code></pre>
+        
+        <h3>3. Creating Special Arrays</h3>
+        <pre><code># Array of zeros
+zeros = np.zeros((3, 4))
+print(zeros)
+
+# Array of ones
+ones = np.ones((2, 3))
+print(ones)
+
+# Array with range of values
+range_arr = np.arange(0, 10, 2)  # start, stop, step
+print(range_arr)  # [0 2 4 6 8]</code></pre>
+        
+        <h3>4. Array Indexing and Slicing</h3>
+        <pre><code>arr = np.array([10, 20, 30, 40, 50])
+print(arr[0])      # 10 - first element
+print(arr[-1])     # 50 - last element
+print(arr[1:4])    # [20 30 40] - elements from index 1 to 3
+
+# 2D array indexing
+arr_2d = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+print(arr_2d[0, 1])   # 2 - row 0, column 1
+print(arr_2d[1:, :2]) # [[4 5]
+                      #  [7 8]] - rows 1-end, cols 0-1</code></pre>
+        
+        <h3>5. Array Operations</h3>
+        <pre><code>a = np.array([1, 2, 3])
+b = np.array([4, 5, 6])
+
+print(a + b)    # [5 7 9] - element-wise addition
+print(a * b)    # [4 10 18] - element-wise multiplication
+print(a ** 2)   # [1 4 9] - element-wise power
+print(np.sum(a)) # 6 - sum of all elements
+print(np.mean(a)) # 2.0 - average of elements</code></pre>
+        
+        <h3>6. Array Reshaping</h3>
+        <pre><code>arr = np.array([1, 2, 3, 4, 5, 6])
+reshaped = arr.reshape(2, 3)
+print(reshaped)  # [[1 2 3]
+                 #  [4 5 6]]
+
+flattened = reshaped.flatten()
+print(flattened)  # [1 2 3 4 5 6]</code></pre>
+      </div>
+      
+      <div class="lesson-flex-col" style="background: #f8f8f8; padding: 24px; border-radius: 8px; box-shadow: 0 2px 8px #eee;">
+        <h3>Live Practice</h3>
+        <textarea id="practice7" rows="10" style="width:100%;font-family:monospace;" placeholder="# Note: NumPy is not available in this browser environment
+# But you can practice the syntax here!
+
+# Example: Create and work with arrays
+arr = [1, 2, 3, 4, 5]  # Using regular Python list
+print(arr)
+print(len(arr))
+print(arr[0:3])"></textarea>
+        <br>
+        <button onclick="runPractice('practice7', 'output7')" style="background:#b2bec3;color:#2d3436;border:none;border-radius:6px;padding:8px 16px;cursor:pointer;">Show Output</button>
+        <button onclick="clearPractice('practice7', 'output7')" style="margin-left:8px;background:#b2bec3;color:#2d3436;border:none;border-radius:6px;padding:8px 16px;cursor:pointer;">Clear</button>
+        <pre id="output7" style="background:#222;color:#fff;padding:10px;border-radius:6px;margin-top:10px;">Output will appear here (Python code is not executed, but you can use this area for practice and notes).</pre>
+        
+        <div style="margin-top:16px;">
+          <strong>Practice Exercises:</strong>
+          <div style="background:#f4f4f4;padding:10px;border-radius:6px;margin-top:8px;">
+            <p><strong>Exercise 1:</strong> Create a NumPy array with numbers 1-10</p>
+            <p><strong>Exercise 2:</strong> Create a 3x3 array filled with zeros</p>
+            <p><strong>Exercise 3:</strong> Find the sum and average of an array</p>
+            <p><strong>Exercise 4:</strong> Reshape a 1D array into a 2D array</p>
+          </div>
+        </div>
+        
+        <div style="margin-top:16px;">
+          <strong>Note:</strong>
+          <div style="background:#fff3cd;padding:10px;border-radius:6px;border-left:4px solid #ffc107;">
+            <p style="margin:0;color:#856404;">NumPy is not available in this browser environment. To use NumPy arrays, you'll need to install it in a full Python environment using: <code>pip install numpy</code></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    `,
+    8: `
+    <div class="lesson-flex-row">
+      <div class="lesson-flex-col" style="background: #fff; padding: 24px; border-radius: 8px; box-shadow: 0 2px 8px #eee;">
+        <h2>Lesson 8: Recursion</h2>
+        
+        <h3>1. What is Recursion?</h3>
+        <p>Recursion is when a function calls itself to solve a smaller version of the same problem.</p>
+        <pre><code># Basic structure of recursion:
+def recursive_function(parameter):
+    # Base case - when to stop
+    if base_condition:
+        return base_value
+    
+    # Recursive case - function calls itself
+    return recursive_function(modified_parameter)</code></pre>
+        
+        <h3>2. Simple Example: Countdown</h3>
+        <pre><code>def countdown(n):
+    # Base case
+    if n <= 0:
+        print("Blast off!")
+        return
+    
+    # Print current number
+    print(n)
+    
+    # Recursive call with smaller value
+    countdown(n - 1)
+
+countdown(5)
+# Output: 5, 4, 3, 2, 1, Blast off!</code></pre>
+        
+        <h3>3. Calculate Factorial</h3>
+        <pre><code>def factorial(n):
+    # Base case
+    if n == 0 or n == 1:
+        return 1
+    
+    # Recursive case: n! = n * (n-1)!
+    return n * factorial(n - 1)
+
+print(factorial(5))  # Output: 120
+# Calculation: 5 * 4 * 3 * 2 * 1 = 120</code></pre>
+        
+        <h3>4. Fibonacci Sequence</h3>
+        <pre><code>def fibonacci(n):
+    # Base cases
+    if n <= 0:
+        return 0
+    elif n == 1:
+        return 1
+    
+    # Recursive case: F(n) = F(n-1) + F(n-2)
+    return fibonacci(n - 1) + fibonacci(n - 2)
+
+# Print first 10 Fibonacci numbers
+for i in range(10):
+    print(fibonacci(i), end=" ")
+# Output: 0 1 1 2 3 5 8 13 21 34</code></pre>
+        
+        <h3>5. Sum of List Elements</h3>
+        <pre><code>def sum_list(lst):
+    # Base case - empty list
+    if len(lst) == 0:
+        return 0
+    
+    # Recursive case: first element + sum of rest
+    return lst[0] + sum_list(lst[1:])
+
+numbers = [1, 2, 3, 4, 5]
+print(sum_list(numbers))  # Output: 15</code></pre>
+        
+        <h3>6. Power Function</h3>
+        <pre><code>def power(base, exponent):
+    # Base case
+    if exponent == 0:
+        return 1
+    
+    # Recursive case: base^exp = base * base^(exp-1)
+    return base * power(base, exponent - 1)
+
+print(power(2, 3))  # Output: 8 (2^3)
+print(power(5, 2))  # Output: 25 (5^2)</code></pre>
+        
+        <h3>7. Reverse a String</h3>
+        <pre><code>def reverse_string(s):
+    # Base case - empty string or single character
+    if len(s) <= 1:
+        return s
+    
+    # Recursive case: last char + reverse of rest
+    return s[-1] + reverse_string(s[:-1])
+
+print(reverse_string("hello"))  # Output: "olleh"
+print(reverse_string("Python")) # Output: "nohtyP"</code></pre>
+        
+        <h3>8. Binary Search (Recursive)</h3>
+        <pre><code>def binary_search(arr, target, left=0, right=None):
+    if right is None:
+        right = len(arr) - 1
+    
+    # Base case - element not found
+    if left > right:
+        return -1
+    
+    # Find middle index
+    mid = (left + right) // 2
+    
+    # Found the target
+    if arr[mid] == target:
+        return mid
+    
+    # Target is in left half
+    elif arr[mid] > target:
+        return binary_search(arr, target, left, mid - 1)
+    
+    # Target is in right half
+    else:
+        return binary_search(arr, target, mid + 1, right)
+
+sorted_list = [1, 3, 5, 7, 9, 11, 13]
+print(binary_search(sorted_list, 7))  # Output: 3</code></pre>
+      </div>
+      
+      <div class="lesson-flex-col" style="background: #f8f8f8; padding: 24px; border-radius: 8px; box-shadow: 0 2px 8px #eee;">
+        <h3>Live Practice</h3>
+        <textarea id="practice8" rows="12" style="width:100%;font-family:monospace;" placeholder="# Practice recursion here!
+# Try implementing a simple recursive function
+
+def countdown(n):
+    if n <= 0:
+        print('Done!')
+        return
+    print(n)
+    countdown(n - 1)
+
+countdown(3)"></textarea>
+        <br>
+        <button onclick="runPractice('practice8', 'output8')" style="background:#b2bec3;color:#2d3436;border:none;border-radius:6px;padding:8px 16px;cursor:pointer;">Show Output</button>
+        <button onclick="clearPractice('practice8', 'output8')" style="margin-left:8px;background:#b2bec3;color:#2d3436;border:none;border-radius:6px;padding:8px 16px;cursor:pointer;">Clear</button>
+        <pre id="output8" style="background:#222;color:#fff;padding:10px;border-radius:6px;margin-top:10px;">Output will appear here (Python code is not executed, but you can use this area for practice and notes).</pre>
+        
+        <div style="margin-top:16px;">
+          <strong>Practice Exercises:</strong>
+          <div style="background:#f4f4f4;padding:12px;border-radius:6px;margin-top:8px;">
+            <p><strong>Exercise 1:</strong> Write a recursive function to calculate the sum of numbers from 1 to n</p>
+            <p><strong>Exercise 2:</strong> Create a function that counts down from any number</p>
+            <p><strong>Exercise 3:</strong> Implement a recursive function to find the length of a string</p>
+            <p><strong>Exercise 4:</strong> Write a function to check if a string is a palindrome using recursion</p>
+          </div>
+        </div>
+        
+        <div style="margin-top:16px;">
+          <strong>Key Concepts:</strong>
+          <div style="background:#e8f4fd;padding:12px;border-radius:6px;border-left:4px solid #0984e3;">
+            <p style="margin:0;color:#0984e3;">
+              <strong>Base Case:</strong> The condition that stops the recursion<br>
+              <strong>Recursive Case:</strong> The function calling itself with modified parameters<br>
+              <strong>Stack:</strong> Each recursive call adds to the call stack
+            </p>
+          </div>
+        </div>
+        
+        <div style="margin-top:16px;">
+          <strong>Common Pitfalls:</strong>
+          <div style="background:#fff3cd;padding:12px;border-radius:6px;border-left:4px solid #ffc107;">
+            <p style="margin:0;color:#856404;">
+              ⚠️ <strong>Infinite Recursion:</strong> Always ensure you have a proper base case<br>
+              ⚠️ <strong>Stack Overflow:</strong> Too many recursive calls can crash your program<br>
+              ⚠️ <strong>Performance:</strong> Some recursive solutions can be very slow (like naive Fibonacci)
+            </p>
+          </div>
+        </div>
+        
+        <div style="margin-top:16px;">
+          <strong>Sample Solution (Factorial):</strong>
+          <pre style="background:#f4f4f4;padding:10px;border-radius:6px;font-size:0.9em;">def factorial(n):
+    if n <= 1:
+        return 1
+    return n * factorial(n - 1)
+
+print(factorial(5))  # 120</pre>
+        </div>
+      </div>
+    </div>
+    `
+  };
+  document.getElementById('mainContent').innerHTML = content[lessonNumber];
+}
+
+// Add this function to handle the "Show Output" button
+async function runPractice(textareaId, outputId) {
+  const code = document.getElementById(textareaId).value;
+  const outputElem = document.getElementById(outputId);
+  outputElem.textContent = "Running...";
+  try {
+    let pyodide = await pyodideReadyPromise;
+    // Redirect Python's stdout to capture print() output
+    await pyodide.runPythonAsync(`
+import sys
+from io import StringIO
+sys.stdout = StringIO()
+`);
+    await pyodide.runPythonAsync(code);
+    const output = await pyodide.runPythonAsync("sys.stdout.getvalue()");
+    outputElem.textContent = output.trim() || "No output.";
+  } catch (err) {
+    outputElem.textContent = err;
+  }
+}
+
+function clearPractice(textareaId, outputId) {
+  document.getElementById(textareaId).value = "";
+  document.getElementById(outputId).textContent = "Output will appear here (Python code is not executed, but you can use this area for practice and notes).";
+}
+
+const currentUser = localStorage.getItem('currentUser');
+if (currentUser) {
+  document.getElementById('welcome-user').textContent = `Welcome, ${currentUser}!`;
+  document.getElementById('username').textContent = currentUser;
+}
+
+// Show logout button if user is logged in
+if (currentUser) {
+  document.getElementById('logout-btn').style.display = 'inline-block';
+}
+
+// Log out function
+document.getElementById('logout-btn').onclick = function() {
+  localStorage.removeItem('currentUser');
+  document.getElementById('welcome-user').textContent = '';
+  document.getElementById('username').textContent = '';
+  this.style.display = 'none';
+  // Optionally reload or redirect:
+  // location.reload();
+};
+
+// Show login button only if user is not logged in
+if (!currentUser) {
+  document.getElementById('login-btn').style.display = 'inline-block';
+} else {
+  document.getElementById('login-btn').style.display = 'none';
+}
+
+// Example login handler (show username first, then password)
+document.getElementById('login-btn').onclick = function() {
+  // Create a modal for username input
+  const modal = document.createElement('div');
+  modal.style.position = 'fixed';
+  modal.style.top = 0;
+  modal.style.left = 0;
+  modal.style.width = '100vw';
+  modal.style.height = '100vh';
+  modal.style.background = 'rgba(0,0,0,0.3)';
+  modal.style.display = 'flex';
+  modal.style.alignItems = 'center';  // Fixed: was using colon instead of equals
+  modal.style.justifyContent = 'center';
+  modal.style.zIndex = 9999;
+
+  const box = document.createElement('div');
+  box.style.background = '#fff';
+  box.style.padding = '32px 24px';
+  box.style.borderRadius = '10px';
+  box.style.boxShadow = '0 4px 24px rgba(0,0,0,0.15)';
+  box.style.textAlign = 'center';
+  box.style.minWidth = '260px';
+
+  // Username label and input
+  const userLabel = document.createElement('label');
+  userLabel.textContent = "Enter your username:";
+  userLabel.style.display = 'block';
+  userLabel.style.marginBottom = '12px';
+
+  const userInput = document.createElement('input');
+  userInput.type = 'text';
+  userInput.style.fontSize = '1.1em';
+  userInput.style.padding = '8px 12px';
+  userInput.style.width = '90%';
+  userInput.style.marginBottom = '18px';
+  userInput.style.borderRadius = '6px';
+  userInput.style.border = '1px solid #ccc';
+
+  // Buttons for username step
+  const nextBtn = document.createElement('button');
+  nextBtn.textContent = "Next";
+  nextBtn.style.background = '#00b894';
+  nextBtn.style.color = '#fff';
+  nextBtn.style.padding = '8px 24px';
+  nextBtn.style.border = 'none';
+  nextBtn.style.borderRadius = '6px';
+  nextBtn.style.fontWeight = 'bold';
+  nextBtn.style.cursor = 'pointer';
+  nextBtn.style.marginRight = '10px';
+
+  const cancelBtn = document.createElement('button');
+  cancelBtn.textContent = "Cancel";
+  cancelBtn.style.background = '#e17055';
+  cancelBtn.style.color = '#fff';
+  cancelBtn.style.padding = '8px 24px';
+  cancelBtn.style.border = 'none';
+  cancelBtn.style.borderRadius = '6px';
+  cancelBtn.style.fontWeight = 'bold';
+  cancelBtn.style.cursor = 'pointer';
+
+  // Username step
+  nextBtn.onclick = function() {
+    const username = userInput.value.trim();
+    if (username) {
+      // Clear box and show password input
+      box.innerHTML = '';
+      const passLabel = document.createElement('label');
+      passLabel.textContent = "Enter your password:";
+      passLabel.style.display = 'block';
+      passLabel.style.marginBottom = '12px';
+
+      const passInput = document.createElement('input');
+      passInput.type = 'password';
+      passInput.style.fontSize = '1.1em';
+      passInput.style.padding = '8px 12px';
+      passInput.style.width = '90%';
+      passInput.style.marginBottom = '18px';
+      passInput.style.borderRadius = '6px';
+      passInput.style.border = '1px solid #ccc';
+
+      const loginBtn = document.createElement('button');
+      loginBtn.textContent = "Log In";
+      loginBtn.style.background = '#00b894';
+      loginBtn.style.color = '#fff';
+      loginBtn.style.padding = '8px 24px';
+      loginBtn.style.border = 'none';
+      loginBtn.style.borderRadius = '6px';
+      loginBtn.style.fontWeight = 'bold';
+      loginBtn.style.cursor = 'pointer';
+      loginBtn.style.marginRight = '10px';
+
+      const cancelBtn2 = document.createElement('button');
+      cancelBtn2.textContent = "Cancel";
+      cancelBtn2.style.background = '#e17055';
+      cancelBtn2.style.color = '#fff';
+      cancelBtn2.style.padding = '8px 24px';
+      cancelBtn2.style.border = 'none';
+      cancelBtn2.style.borderRadius = '6px';
+      cancelBtn2.style.fontWeight = 'bold';
+      cancelBtn2.style.cursor = 'pointer';
+
+      loginBtn.onclick = function() {
+        const password = passInput.value;
+        if (password) {
+          localStorage.setItem('currentUser', username);
+          document.getElementById('welcome-user').textContent = `Welcome, ${username}!`;
+          document.getElementById('username').textContent = username;
+          document.getElementById('login-btn').style.display = 'none';
+          document.getElementById('logout-btn').style.display = 'inline-block';
+          document.body.removeChild(modal);
+        } else {
+          alert("Password is required to log in.");
+        }
+      };
+
+      cancelBtn2.onclick = function() {
+        document.body.removeChild(modal);
+      };
+
+      box.appendChild(passLabel);
+      box.appendChild(passInput);
+      box.appendChild(document.createElement('br'));
+      box.appendChild(loginBtn);
+      box.appendChild(cancelBtn2);
+      passInput.focus();
+    } else {
+      alert("Username is required.");
+    }
+  };
+
+  cancelBtn.onclick = function() {
+    document.body.removeChild(modal);
+  };
+
+  box.appendChild(userLabel);
+  box.appendChild(userInput);
+  box.appendChild(document.createElement('br'));
+  box.appendChild(nextBtn);
+  box.appendChild(cancelBtn);
+  modal.appendChild(box);
+  document.body.appendChild(modal);
+
+  userInput.focus();
+};
+
+const helpContent = `
+  <div class="hero" style="background: #fff; color: #2c3e50; border: 2px solid #6c5ce7;">
+    <h1 style="color:#6c5ce7;">Help Center</h1>
+    <ul style="text-align:left; max-width:600px; margin:0 auto; font-size:1.1em;">
+      <li><strong>Getting Started:</strong> Click "Start Learning" to begin your first lesson.</li>
+      <li><strong>Live Practice:</strong> Type your code in the practice box and click "Show Output".</li>
+      <li><strong>Account:</strong> Use the "Sign Me Up" button to create an account. Log in at the top right.</li>
+      <li><strong>Navigation:</strong> Use the sidebar to switch lessons or return home.</li>
+      <li><strong>Problems?</strong> Try refreshing the page or using a different browser.</li>
+      <li><strong>Still need help?</strong> <a href="mailto:support@example.com">Contact Support</a></li>
+    </ul>
+  </div>
+`;
+
+function showAnnouncements() {
+  const modal = document.getElementById('announcement-modal');
+  const list = document.getElementById('announcement-list-modal');
+  const announcements = JSON.parse(localStorage.getItem('announcements')) || [];
+  list.innerHTML = '';
+  if (announcements.length === 0) {
+    list.innerHTML = '<li style="color:#636e72;">No announcements yet.</li>';
+  } else {
+    announcements.forEach((text, idx) => {
+      const li = document.createElement('li');
+      li.style.marginBottom = '14px';
+      li.textContent = (idx + 1) + '. ' + text;
+      list.appendChild(li);
+    });
+  }
+  modal.style.display = 'flex';
+}
+
+// Dynamically load lessons from localStorage and create buttons
+function loadLessonButtons() {
+  const lessonButtonsDiv = document.getElementById('lesson-buttons');
+  lessonButtonsDiv.innerHTML = '';
+  const lessons = JSON.parse(localStorage.getItem('lessons')) || [];
+  lessons.forEach((lesson, idx) => {
+    const btn = document.createElement('button');
+    btn.className = 'lesson-btn';
+    btn.onclick = function() { showLesson(idx + 1); };
+    btn.innerHTML = `<img src="icon1.jpg" alt="Lesson ${idx + 1} Icon">` + lesson.title;
+    lessonButtonsDiv.appendChild(btn);
+  });
+}
+
+// Call on page load
+window.addEventListener('DOMContentLoaded', loadLessonButtons);
+  </script>
+
+  <!-- Add this modal just before </body> -->
+<div id="announcement-modal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.35); z-index:9999; align-items:center; justify-content:center;">
+  <div style="background:#fff; color:#2c3e50; max-width:420px; width:90vw; border-radius:12px; box-shadow:0 4px 24px #2222; padding:32px 24px; position:relative;">
+    <h2 style="color:#e17055; margin-top:0;">Announcements</h2>
+    <ul id="announcement-list-modal" style="padding-left:0; list-style:none; font-size:1.1em; margin-bottom:24px;"></ul>
+    <button onclick="document.getElementById('announcement-modal').style.display='none';" style="position:absolute; top:12px; right:18px; background:#e17055; color:#fff; border:none; border-radius:6px; padding:6px 16px; font-weight:bold; cursor:pointer;">Close</button>
+  </div>
+</div>
+</body>
+</html>

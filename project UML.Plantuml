@@ -1,0 +1,57 @@
+@startuml
+
+class Administrator {
+    - username: String
+    - password: String
+    + manageUsers()
+    + manageTutorials()
+    + postAnnouncement()
+}
+
+class Student {
+    - username: String
+    - password: String
+    + enrollTutorial()
+    + answerQuestion()
+}
+
+class Tutorial {
+    - title: String
+    - content: String
+    + addQuestion()
+    + getQuestions()
+}
+
+class Question {
+    - text: String
+    - answer: String
+    + checkAnswer()
+}
+
+class Home {
+    + showWelcome()
+    + showFeatures()
+}
+
+class Login {
+    + login(username, password)
+}
+
+class SignUp {
+    + register(username, password, email)
+}
+
+class HelpMe {
+    + showFAQ()
+    + contactSupport()
+}
+
+Administrator --|> Login
+Student --|> Login
+Student --> Tutorial
+Tutorial --> Question
+Home --> Login
+Home --> SignUp
+Home --> HelpMe
+
+@enduml

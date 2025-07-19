@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login - Junior Scholars</title>
+    <style>
+        body {
+            background: url('student-coding.jpg') center center/cover no-repeat #f5f6fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+        }
+        .login-container {
+            background: rgba(255,255,255,0.95);
+            padding: 40px 32px;
+            border-radius: 14px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.10);
+            width: 100%;
+            max-width: 350px;
+            text-align: center;
+        }
+        .login-container h2 {
+            margin-bottom: 24px;
+            color: #0984e3;
+        }
+        .login-container input[type="text"],
+        .login-container input[type="password"] {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0 18px 0;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 1em;
+        }
+        .login-container button {
+            width: 100%;
+            padding: 12px;
+            background: #0984e3;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .login-container button:hover {
+            background: #00b894;
+        }
+        .login-container .signup-link {
+            display: block;
+            margin-top: 18px;
+            color: #636e72;
+            text-decoration: none;
+            font-size: 0.98em;
+        }
+        .login-container .signup-link:hover {
+            color: #0984e3;
+        }
+    </style>
+</head>
+<body>
+    <!-- Home button at the top left -->
+    <a href="Home.html" style="position: absolute; top: 24px; left: 24px; background:#636e72; color:#fff; padding:8px 24px; border-radius:8px; text-decoration:none; font-weight:bold; z-index:10;">
+        Home
+    </a>
+    <form class="login-container" onsubmit="login(event)">
+        <h2>Login</h2>
+        <input type="text" placeholder="Username" required>
+        <input type="password" placeholder="Password" required>
+        <button type="submit">Login</button>
+        <a href="SignUp.html" class="signup-link">Don't have an account? Sign up</a>
+    </form>
+    <script>
+function login(event) {
+    event.preventDefault();
+    const username = event.target[0].value.trim();
+    const password = event.target[1].value;
+    
+    // Get both admin and regular users from localStorage
+    const adminUsers = JSON.parse(localStorage.getItem('user-admin')) || [];
+    const regularUsers = JSON.parse(localStorage.getItem('other-users')) || [];
+    
+    // Debug: Check if users exist
+    if (adminUsers.length === 0 && regularUsers.length === 0) {
+        alert('No users found! Please sign up first.');
+        return;
+    }
+    
+    console.log('Admin users:', adminUsers); // For debugging
+    console.log('Regular users:', regularUsers); // For debugging
+    
+    // Check if user is admin based on username pattern
+    const isAdminUsername = username.toLowerCase() === 'admin' || username.toLowerCase().endsWith('-admin');
+    
+    let user = null;
+    
+    // Look for user in appropriate storage first, then check the other
+    if (isAdminUsername) {
+        user = adminUsers.find(u => u.username === username && u.password === password);
+        if (!user) {
+            // Also check regular users in case they signed up with wrong storage
+            user = regularUsers.find(u => u.username === username && u.password === password);
+        }
+    } else {
+        user = regularUsers.find(u => u.username === username && u.password === password);
+        if (!user) {
+            // Also check admin users in case they signed up with wrong storage
+            user = adminUsers.find(u => u.username === username && u.password === password);
+        }
+    }
+    
+    if (user) {
+        localStorage.setItem('currentUser', username);
+        alert('Login successful!');
+        // Only users named 'admin' or ending with '-admin' go to Administrator.html, others go to Tutorial.html
+        if (isAdminUsername) {
+            window.location.href = 'Administrator.html';
+        } else {
+            window.location.href = 'Tutorial.html';
+        }
+    } else {
+        alert('Invalid username or password!');
+    }
+}
+
+// Correct way to store user info
+function registerUser(username, email, password) {
+    // Determine if user is admin based on username
+    const isAdmin = username.toLowerCase() === 'admin' || username.toLowerCase().endsWith('-admin');
+    const storageKey = isAdmin ? 'user-admin' : 'other-users';
+    
+    let users = JSON.parse(localStorage.getItem(storageKey)) || [];
+    users.push({username, email, password});
+    localStorage.setItem(storageKey, JSON.stringify(users));
+}
+    </script>
+</body>
+</html>

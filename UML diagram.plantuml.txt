@@ -1,0 +1,32 @@
+@startuml
+class Student {
+  - id: int
+  - name: string
+  - email: string
+  + enroll(lesson: Lesson): void
+}
+
+class Lesson {
+  - id: int
+  - title: string
+  - description: string
+  + addStudent(student: Student): void
+}
+
+class StudentManager {
+  - students: List<Student>
+  + addStudent(student: Student): void
+  + getStudent(id: int): Student
+}
+
+class LessonManager {
+  - lessons: List<Lesson>
+  + addLesson(lesson: Lesson): void
+  + getLesson(id: int): Lesson
+}
+
+Student "1" -- "*" Lesson : enrolls >
+Lesson "*" -- "*" Student : has students >
+StudentManager "1" -- "*" Student : manages >
+LessonManager "1" -- "*" Lesson : manages >
+@enduml

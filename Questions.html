@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Questions & Quiz - Python Learning Hub</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            font-family: 'Montserrat', Arial, sans-serif;
+            background: url('student-coding.jpg') center center/cover no-repeat;
+            background-attachment: fixed;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+        .question-container {
+            max-width: 900px;
+            margin: 40px auto;
+            background: rgba(255,255,255,0.95);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(44,62,80,0.18);
+            padding: 40px;
+            position: relative;
+        }
+        h1 {
+            color: #0984e3;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            letter-spacing: 1px;
+        }
+        .quiz-section {
+            background: rgba(9, 132, 227, 0.1);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+            border-left: 5px solid #0984e3;
+        }
+        .question {
+            background: #fff;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 2px solid #e0e0e0;
+            transition: all 0.3s ease;
+        }
+        .question:hover {
+            border-color: #0984e3;
+            box-shadow: 0 4px 16px rgba(9, 132, 227, 0.2);
+        }
+        .question h3 {
+            color: #2d3436;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .option {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 12px 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .option:hover {
+            background: #e3f2fd;
+            border-color: #0984e3;
+        }
+        .option.selected {
+            background: #e3f2fd;
+            border-color: #0984e3;
+            color: #0984e3;
+            font-weight: bold;
+        }
+        .option.correct {
+            background: #d4edda;
+            border-color: #28a745;
+            color: #155724;
+        }
+        .option.incorrect {
+            background: #f8d7da;
+            border-color: #dc3545;
+            color: #721c24;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            border-radius: 8px;
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 8px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            font-size: 1em;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        .btn-primary { background: #0984e3; }
+        .btn-success { background: #00b894; }
+        .btn-warning { background: #fdcb6e; color: #2d3436; }
+        .btn-danger { background: #e74c3c; }
+        .btn-purple { background: #6c5ce7; }
+        .progress-bar {
+            background: #e9ecef;
+            border-radius: 10px;
+            height: 25px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        .progress-fill {
+            background: linear-gradient(90deg, #00b894, #0984e3);
+            height: 100%;
+            border-radius: 10px;
+            text-align: center;
+            line-height: 25px;
+            color: white;
+            font-weight: bold;
+            font-size: 1em;
+            transition: width 0.5s ease;
+        }
+        .score-card {
+            background: linear-gradient(135deg, #74b9ff, #0984e3);
+            border-radius: 15px;
+            padding: 25px;
+            color: white;
+            text-align: center;
+            margin: 25px 0;
+        }
+        .back-btn {
+            position: absolute;
+            top: 24px;
+            left: 24px;
+            background: #0984e3;
+            color: #fff;
+            padding: 10px 28px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            z-index: 10;
+            box-shadow: 0 2px 8px #b2bec3;
+            transition: background 0.2s;
+        }
+        .back-btn:hover {
+            background: #636e72;
+        }
+        .quiz-controls {
+            text-align: center;
+            margin: 30px 0;
+        }
+        .hidden {
+            display: none;
+        }
+        .lesson-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+        .lesson-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 20px;
+            border-left: 4px solid #0984e3;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        .lesson-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+        }
+        @media (max-width: 768px) {
+            .question-container {
+                margin: 20px;
+                padding: 20px;
+            }
+            .back-btn {
+                left: 10px;
+                top: 10px;
+                padding: 8px 16px;
+            }
+            .lesson-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="Tutorial.html" class="back-btn">← Back to Tutorial</a>
+    
+    <div class="question-container">
+        <h1>🧠 Python Quiz & Questions</h1>
+        
+        <!-- Quiz Progress -->
+        <div class="quiz-section">
+            <h2 style="color: #0984e3; margin-top: 0;">📊 Quiz Progress</h2>
+            <div class="progress-bar">
+                <div class="progress-fill" id="quiz-progress" style="width: 0%;">0/6 Questions</div>
+            </div>
+            <p style="text-align: center; color: #636e72;">
+                Complete the quiz to test your Python knowledge from all 6 lessons!
+            </p>
+        </div>
+        
+        <!-- Quiz Questions -->
+        <div id="quiz-container">
+            <!-- Question 1: Python Basics -->
+            <div class="question" data-question="1">
+                <h3>🐍 Question 1: What does this Python code output? <code>print("Hello, World!")</code></h3>
+                <div class="options">
+                    <div class="option" data-answer="a">A) Hello World</div>
+                    <div class="option" data-answer="b">B) Hello, World!</div>
+                    <div class="option" data-answer="c">C) "Hello, World!"</div>
+                    <div class="option" data-answer="d">D) Error</div>
+                </div>
+            </div>
+            
+            <!-- Question 2: Conditional Statements -->
+            <div class="question" data-question="2">
+                <h3>🔀 Question 2: What will this code print? <code>x = 85; print("A" if x >= 90 else "B" if x >= 80 else "C")</code></h3>
+                <div class="options">
+                    <div class="option" data-answer="a">A) A</div>
+                    <div class="option" data-answer="b">B) B</div>
+                    <div class="option" data-answer="c">C) C</div>
+                    <div class="option" data-answer="d">D) Error</div>
+                </div>
+            </div>
+            
+            <!-- Question 3: Loops -->
+            <div class="question" data-question="3">
+                <h3>🔄 Question 3: How many times will "Hello" be printed? <code>for i in range(3): print("Hello")</code></h3>
+                <div class="options">
+                    <div class="option" data-answer="a">A) 2 times</div>
+                    <div class="option" data-answer="b">B) 3 times</div>
+                    <div class="option" data-answer="c">C) 4 times</div>
+                    <div class="option" data-answer="d">D) Infinite times</div>
+                </div>
+            </div>
+            
+            <!-- Question 4: Functions -->
+            <div class="question" data-question="4">
+                <h3>🔧 Question 4: What is the output? <code>def add(a, b): return a + b; print(add(5, 3))</code></h3>
+                <div class="options">
+                    <div class="option" data-answer="a">A) 5</div>
+                    <div class="option" data-answer="b">B) 3</div>
+                    <div class="option" data-answer="c">C) 8</div>
+                    <div class="option" data-answer="d">D) None</div>
+                </div>
+            </div>
+            
+            <!-- Question 5: Lists -->
+            <div class="question" data-question="5">
+                <h3>📋 Question 5: What does <code>fruits = ["apple", "banana"]; print(len(fruits))</code> output?</h3>
+                <div class="options">
+                    <div class="option" data-answer="a">A) apple</div>
+                    <div class="option" data-answer="b">B) 2</div>
+                    <div class="option" data-answer="c">C) banana</div>
+                    <div class="option" data-answer="d">D) ["apple", "banana"]</div>
+                </div>
+            </div>
+            
+            <!-- Question 6: Dictionaries -->
+            <div class="question" data-question="6">
+                <h3>🗂️ Question 6: What is the output? <code>person = {"name": "Alice", "age": 25}; print(person["name"])</code></h3>
+                <div class="options">
+                    <div class="option" data-answer="a">A) Alice</div>
+                    <div class="option" data-answer="b">B) 25</div>
+                    <div class="option" data-answer="c">C) name</div>
+                    <div class="option" data-answer="d">D) {"name": "Alice", "age": 25}</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Quiz Controls -->
+        <div class="quiz-controls">
+            <button id="submit-quiz" class="btn btn-primary" onclick="submitQuiz()">Submit Quiz</button>
+            <button id="reset-quiz" class="btn btn-warning" onclick="resetQuiz()">Reset Quiz</button>
+        </div>
+        
+        <!-- Results Section -->
+        <div id="results-section" class="hidden">
+            <div class="score-card">
+                <h2>🎉 Quiz Results</h2>
+                <div id="score-display" style="font-size: 2.5em; margin: 20px 0;">
+                    <!-- Score will be displayed here -->
+                </div>
+                <div id="feedback">
+                    <!-- Feedback will be displayed here -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- Lesson Review Section -->
+        <div class="quiz-section">
+            <h2 style="color: #00b894; margin-top: 0;">📚 Review by Lesson</h2>
+            <p>Need to review specific topics? Click on any lesson below:</p>
+            <div class="lesson-cards">
+                <div class="lesson-card">
+                    <h4 style="color: #0984e3; margin-top: 0;">📖 Lesson 1: Python Basics</h4>
+                    <p>Variables, data types, print statements, and comments.</p>
+                    <button class="btn btn-primary" onclick="reviewLesson(1)">Review Lesson 1</button>
+                </div>
+                <div class="lesson-card">
+                    <h4 style="color: #0984e3; margin-top: 0;">🔀 Lesson 2: Conditional Statements</h4>
+                    <p>If, elif, else statements and logical conditions.</p>
+                    <button class="btn btn-primary" onclick="reviewLesson(2)">Review Lesson 2</button>
+                </div>
+                <div class="lesson-card">
+                    <h4 style="color: #0984e3; margin-top: 0;">🔄 Lesson 3: Loops</h4>
+                    <p>For loops, while loops, break and continue statements.</p>
+                    <button class="btn btn-primary" onclick="reviewLesson(3)">Review Lesson 3</button>
+                </div>
+                <div class="lesson-card">
+                    <h4 style="color: #0984e3; margin-top: 0;">🔧 Lesson 4: Functions</h4>
+                    <p>Defining functions, parameters, return values.</p>
+                    <button class="btn btn-primary" onclick="reviewLesson(4)">Review Lesson 4</button>
+                </div>
+                <div class="lesson-card">
+                    <h4 style="color: #0984e3; margin-top: 0;">📋 Lesson 5: Lists</h4>
+                    <p>Creating lists, indexing, methods, and list operations.</p>
+                    <button class="btn btn-primary" onclick="reviewLesson(5)">Review Lesson 5</button>
+                </div>
+                <div class="lesson-card">
+                    <h4 style="color: #0984e3; margin-top: 0;">🗂️ Lesson 6: Dictionaries</h4>
+                    <p>Key-value pairs, dictionary methods, and operations.</p>
+                    <button class="btn btn-primary" onclick="reviewLesson(6)">Review Lesson 6</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Practice Levels Section -->
+        <div class="quiz-section">
+            <h2 style="color: #6c5ce7; margin-top: 0;">🎯 Practice Challenges</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+                <div style="background: #fff; border-radius: 10px; padding: 20px; border-left: 4px solid #00b894;">
+                    <h4 style="color: #00b894; margin-top: 0;">💡 Beginner Challenge</h4>
+                    <p>Practice basic Python syntax and simple operations.</p>
+                    <button class="btn btn-success" onclick="startChallenge('beginner')">Start Challenge</button>
+                </div>
+                <div style="background: #fff; border-radius: 10px; padding: 20px; border-left: 4px solid #fdcb6e;">
+                    <h4 style="color: #fdcb6e; margin-top: 0;">⚡ Intermediate Challenge</h4>
+                    <p>Work with functions, loops, and data structures.</p>
+                    <button class="btn btn-warning" onclick="startChallenge('intermediate')">Start Challenge</button>
+                </div>
+                <div style="background: #fff; border-radius: 10px; padding: 20px; border-left: 4px solid #e74c3c;">
+                    <h4 style="color: #e74c3c; margin-top: 0;">🔥 Advanced Challenge</h4>
+                    <p>Complex problems combining multiple concepts.</p>
+                    <button class="btn btn-danger" onclick="startChallenge('advanced')">Start Challenge</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Quick Actions -->
+        <div style="margin-top: 30px; text-align: center;">
+            <h3 style="color: #2d3436;">🚀 Quick Actions</h3>
+            <a href="Tutorial.html" class="btn btn-primary">Back to Lessons</a>
+            <a href="Student.html" class="btn btn-success">View Progress</a>
+            <a href="HelpMe.html" class="btn btn-purple">Get Help</a>
+        </div>
+    </div>
+    
+    <script>
+        // Quiz data with correct answers (matches your Tutorial.html lessons)
+        const quizAnswers = {
+            1: 'b', // Hello, World!
+            2: 'b', // B (since 85 >= 80 but < 90)
+            3: 'b', // 3 times
+            4: 'c', // 8 (5 + 3)
+            5: 'b', // 2 (length of list)
+            6: 'a'  // Alice
+        };
+        
+        let selectedAnswers = {};
+        let quizCompleted = false;
+        
+        // Handle option selection
+        document.querySelectorAll('.option').forEach(option => {
+            option.addEventListener('click', function() {
+                const question = this.closest('.question');
+                const questionNum = question.dataset.question;
+                const answer = this.dataset.answer;
+                
+                // Remove previous selection
+                question.querySelectorAll('.option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                
+                // Mark current selection
+                this.classList.add('selected');
+                selectedAnswers[questionNum] = answer;
+                
+                updateProgress();
+            });
+        });
+        
+        function updateProgress() {
+            const totalQuestions = Object.keys(quizAnswers).length;
+            const answeredQuestions = Object.keys(selectedAnswers).length;
+            const progressPercent = (answeredQuestions / totalQuestions) * 100;
+            
+            const progressFill = document.getElementById('quiz-progress');
+            progressFill.style.width = progressPercent + '%';
+            progressFill.textContent = `${answeredQuestions}/${totalQuestions} Questions`;
+        }
+        
+        function submitQuiz() {
+            if (Object.keys(selectedAnswers).length < Object.keys(quizAnswers).length) {
+                alert('Please answer all questions before submitting!');
+                return;
+            }
+            
+            let correctAnswers = 0;
+            const totalQuestions = Object.keys(quizAnswers).length;
+            
+            // Check each answer and highlight correct/incorrect
+            Object.keys(quizAnswers).forEach(questionNum => {
+                const question = document.querySelector(`[data-question="${questionNum}"]`);
+                const selectedAnswer = selectedAnswers[questionNum];
+                const correctAnswer = quizAnswers[questionNum];
+                
+                // Reset all options
+                question.querySelectorAll('.option').forEach(option => {
+                    option.classList.remove('selected', 'correct', 'incorrect');
+                    
+                    if (option.dataset.answer === correctAnswer) {
+                        option.classList.add('correct');
+                    } else if (option.dataset.answer === selectedAnswer && selectedAnswer !== correctAnswer) {
+                        option.classList.add('incorrect');
+                    }
+                });
+                
+                if (selectedAnswer === correctAnswer) {
+                    correctAnswers++;
+                }
+            });
+            
+            // Calculate score
+            const scorePercent = Math.round((correctAnswers / totalQuestions) * 100);
+            
+            // Show results
+            showResults(correctAnswers, totalQuestions, scorePercent);
+            
+            // Disable further clicking
+            document.querySelectorAll('.option').forEach(option => {
+                option.style.pointerEvents = 'none';
+            });
+            
+            quizCompleted = true;
+            
+            // Save quiz completion to localStorage
+            const currentUser = localStorage.getItem('currentUser') || 'Guest';
+            localStorage.setItem(`quizScore_${currentUser}`, scorePercent);
+            localStorage.setItem(`quizCompleted_${currentUser}`, 'true');
+        }
+        
+        function showResults(correct, total, percent) {
+            const resultsSection = document.getElementById('results-section');
+            const scoreDisplay = document.getElementById('score-display');
+            const feedback = document.getElementById('feedback');
+            
+            scoreDisplay.innerHTML = `${correct}/${total} (${percent}%)`;
+            
+            let feedbackMessage = '';
+            let feedbackColor = '';
+            
+            if (percent >= 90) {
+                feedbackMessage = '🌟 Excellent! You have mastered Python basics! Ready for advanced topics!';
+                feedbackColor = '#00b894';
+            } else if (percent >= 70) {
+                feedbackMessage = '👍 Good job! You understand most concepts. Review the areas you missed.';
+                feedbackColor = '#fdcb6e';
+            } else if (percent >= 50) {
+                feedbackMessage = '📚 Not bad, but you need more practice. Review the tutorial lessons!';
+                feedbackColor = '#e17055';
+            } else {
+                feedbackMessage = '💪 Keep studying! Go back to the tutorial and practice more.';
+                feedbackColor = '#e74c3c';
+            }
+            
+            feedback.innerHTML = `<p style="color: ${feedbackColor}; font-size: 1.2em; margin: 0;">${feedbackMessage}</p>`;
+            resultsSection.classList.remove('hidden');
+        }
+        
+        function resetQuiz() {
+            selectedAnswers = {};
+            quizCompleted = false;
+            
+            // Reset all options
+            document.querySelectorAll('.option').forEach(option => {
+                option.classList.remove('selected', 'correct', 'incorrect');
+                option.style.pointerEvents = 'auto';
+            });
+            
+            // Reset progress
+            updateProgress();
+            
+            // Hide results
+            document.getElementById('results-section').classList.add('hidden';
+        }
+        
+        function reviewLesson(lessonNumber) {
+            // Store the lesson number and redirect to Tutorial.html
+            localStorage.setItem('reviewLesson', lessonNumber);
+            window.location.href = `Tutorial.html#lesson${lessonNumber}`;
+        }
+        
+        function startChallenge(level) {
+            let message = '';
+            switch(level) {
+                case 'beginner':
+                    message = `🌱 Beginner Challenge:\n\n1. Create variables for your name and age\n2. Print a greeting message using these variables\n3. Calculate and print your age in 10 years\n\nTry this in the Tutorial practice area!`;
+                    break;
+                case 'intermediate':
+                    message = `⚡ Intermediate Challenge:\n\n1. Create a function that takes a list of numbers\n2. Return the sum of all even numbers in the list\n3. Test it with [1, 2, 3, 4, 5, 6]\n\nExpected result: 12 (2+4+6)`;
+                    break;
+                case 'advanced':
+                    message = `🔥 Advanced Challenge:\n\n1. Create a dictionary of student grades\n2. Write a function to calculate class average\n3. Find students above average\n4. Use loops and conditionals together\n\nGood luck!`;
+                    break;
+            }
+            alert(message);
+        }
+        
+        // Load previous quiz results if available
+        window.addEventListener('load', function() {
+            const currentUser = localStorage.getItem('currentUser') || 'Guest';
+            const previousScore = localStorage.getItem(`quizScore_${currentUser}`);
+            const wasCompleted = localStorage.getItem(`quizCompleted_${currentUser}`);
+            
+            if (wasCompleted === 'true' && previousScore) {
+                setTimeout(() => {
+                    if (confirm(`Welcome back! Your last quiz score was ${previousScore}%. Would you like to try again to improve your score?`)) {
+                        resetQuiz();
+                    }
+                }, 1000);
+            }
+        });
+        
+        // Show current user if logged in
+        const currentUser = localStorage.getItem('currentUser');
+        if (currentUser) {
+            const welcomeMsg = document.createElement('div');
+            welcomeMsg.style.position = 'absolute';
+            welcomeMsg.style.top = '24px';
+            welcomeMsg.style.right = '24px';
+            welcomeMsg.style.background = 'rgba(9, 132, 227, 0.9)';
+            welcomeMsg.style.color = 'white';
+            welcomeMsg.style.padding = '8px 16px';
+            welcomeMsg.style.borderRadius = '6px';
+            welcomeMsg.style.fontSize = '0.9em';
+            welcomeMsg.style.fontWeight = 'bold';
+            welcomeMsg.textContent = `Welcome, ${currentUser}!`;
+            document.body.appendChild(welcomeMsg);
+        }
+    </script>
+</body>
+</html>

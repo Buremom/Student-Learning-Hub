@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome Home</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+        body {
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            background: #222;
+        }
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            background: url('student-coding.jpg') center/cover no-repeat;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 10px;
+        }
+        .hero-overlay {
+            background: rgba(255,255,255,0.88);
+            border-radius: 20px;
+            padding: 48px 36px;
+            max-width: 500px;
+            width: 100%;
+            box-sizing: border-box;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.10);
+            text-align: center;
+        }
+        .hero-overlay h1 {
+            color: #0984e3;
+            font-size: 2.5em;
+            margin-bottom: 16px;
+        }
+        .hero-overlay h2 {
+            color: #636e72;
+            margin-top: 0;
+            margin-bottom: 18px;
+            font-weight: normal;
+        }
+        .hero-overlay p {
+            color: #636e72;
+            font-size: 1.2em;
+            margin-bottom: 24px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            border-radius: 8px;
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 6px 0;
+            transition: background 0.2s;
+            font-size: 1em;
+            box-sizing: border-box;
+        }
+        .html-btn { background: #e17055; }
+        .css-btn { background: #00b894; }
+        .js-btn { background: #fdcb6e; color: #2d3436; }
+        .fcc-btn { background: #6c5ce7; }
+        .lessons-btn { background: #00bfff; }
+        .btn:hover { opacity: 0.85; }
+        .flashing-text {
+            animation: flash 1s infinite alternate;
+        }
+        @keyframes flash {
+            0%   { opacity: 1; color: #636e72; }
+            50%  { opacity: 0.2; color: #0984e3; }
+            100% { opacity: 1; color: #636e72; }
+        }
+        .flashing-bright {
+            animation: bright-flash 1.2s infinite alternate;
+            font-weight: bold;
+            text-shadow: 0 0 10px #fff, 0 0 20px #ffe066;
+        }
+        @keyframes bright-flash {
+            0%   { color: #ffe066; }
+            25%  { color: #00b894; }
+            50%  { color: #0984e3; }
+            75%  { color: #fdcb6e; }
+            100% { color: #ffe066; }
+        }
+        /* Responsive styles */
+        @media (max-width: 700px) {
+            .hero-overlay {
+                padding: 28px 10px;
+                max-width: 98vw;
+            }
+            .hero-overlay h1 {
+                font-size: 2em;
+            }
+            .hero-overlay h2 {
+                font-size: 1.2em;
+            }
+            .btn {
+                width: 100%;
+                font-size: 1em;
+            }
+        }
+        @media (max-width: 500px) {
+            .hero {
+                padding: 0 2px;
+            }
+            .hero-overlay {
+                padding: 12px 2vw;
+                border-radius: 10px;
+            }
+            .hero-overlay h1 {
+                font-size: 1.3em;
+            }
+            .hero-overlay h2 {
+                font-size: 1em;
+            }
+            .btn {
+                padding: 10px 0;
+                font-size: 0.95em;
+            }
+            ul {
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="Login.html"
+       title="Login"
+       style="position: absolute; top: 24px; right: 32px; background:#0984e3; color:#fff; border-radius:50%; width:44px; height:44px; text-align:center; line-height:44px; font-size:1.5em; box-shadow:0 2px 8px #eee; text-decoration:none; z-index:1000;">
+        &#128274;
+    </a>
+    <a href="HelpMe.html"
+       title="Help"
+       style="position: absolute; top: 78px; right: 32px; background:#6c5ce7; color:#fff; border-radius:50%; width:44px; height:44px; text-align:center; line-height:44px; font-size:1.2em; box-shadow:0 2px 8px #eee; text-decoration:none; z-index:1000;">
+        &#10067;
+    </a>
+    <div class="hero">
+        <div class="hero-overlay">
+            <h1>Let Get Started!</h1>
+            <h2 class="flashing-bright" style="margin-top:0; margin-bottom:18px; font-weight:normal;">Junior Scholars</h2>
+            <ul style="list-style: none; padding: 0; margin: 0 0 18px 0; color: #636e72; font-size: 1.1em;">
+                <li>Fast Learning</li>
+                <li>Easy Understand</li>
+                <li>Motivated</li>
+                <li>Future Engineer</li>
+            </ul>
+            <a href="Login.html" class="btn lessons-btn" style="margin-bottom:20px;">Click to Begin</a>
+            <a href="SignUp.html" class="btn" style="background:#6c5ce7; margin-bottom:16px;" id="signup-btn">Sign Me Up</a>
+        </div>
+    </div>
+    <div class="hero-overlay" style="margin-top:32px; text-align:left;">
+        <h2 style="color:#0984e3;">DevOps Process Overview</h2>
+        <ol style="font-size:1.1em; color:#2d3436;">
+            <li><strong>Plan:</strong> Define features and tasks using a project board or issue tracker.</li>
+            <li><strong>Code:</strong> Develop features and fixes in a version control system (e.g., GitHub).</li>
+            <li><strong>Build:</strong> Automatically build and test code using CI/CD pipelines (e.g., GitHub Actions, Azure DevOps).</li>
+            <li><strong>Test:</strong> Run automated tests to ensure code quality and catch bugs early.</li>
+            <li><strong>Release:</strong> Deploy code to staging/production environments automatically.</li>
+            <li><strong>Monitor:</strong> Track application health, performance, and errors using monitoring tools.</li>
+            <li><strong>Feedback & Improve:</strong> Gather feedback, review metrics, and continuously improve the process.</li>
+        </ol>
+    </div>
+    <div class="hero-overlay" style="margin-top:32px; text-align:left; font-size:1.35em; padding:56px 48px; max-width:700px;">
+        <h2 style="color:#0984e3; font-size:2.2em;">DevOps Metrics</h2>
+        <h3 style="color:#636e72; font-size:1.3em;">Process Measurement</h3>
+        <ul style="font-size:1.15em;">
+            <li><strong>Deployment Frequency:</strong> 2 deployments per week</li>
+            <li><strong>Lead Time for Changes:</strong> Average 2 days from commit to production</li>
+            <li><strong>Change Failure Rate:</strong> Less than 5% of deployments require rollback</li>
+            <li><strong>Mean Time to Recovery (MTTR):</strong> 30 minutes</li>
+            <li><strong>Build Success Rate:</strong> 95%</li>
+        </ul>
+        <h3 style="color:#636e72; font-size:1.3em;">Service Measurement</h3>
+        <ul style="font-size:1.15em;">
+            <li><strong>Availability/Uptime:</strong> 99.9% uptime</li>
+            <li><strong>Response Time:</strong> Average 1.2 seconds</li>
+            <li><strong>Error Rate:</strong> 0.2% per 1000 user actions</li>
+            <li><strong>User Satisfaction:</strong> 4.7/5 average rating</li>
+            <li><strong>System Resource Utilization:</strong> CPU usage averages 40% at peak</li>
+        </ul>
+    </div>
+    <!-- DevOps Metrics Trends Chart (SVG) -->
+    <div style="background:#fff; border-radius:12px; box-shadow:0 2px 8px #eee; padding:24px; max-width:900px;">
+      <h3 style="color:#0984e3; margin-top:0;">DevOps Metrics Trends (Weekly: May–June)</h3>
+      <svg width="820" height="400" viewBox="0 0 820 400">
+        <!-- Axes -->
+        <line x1="50" y1="40" x2="50" y2="360" stroke="#636e72" stroke-width="2"/>
+        <line x1="50" y1="360" x2="790" y2="360" stroke="#636e72" stroke-width="2"/>
+        <!-- Y-axis labels -->
+        <text x="10" y="365" font-size="16" fill="#636e72">0</text>
+        <text x="10" y="295" font-size="16" fill="#636e72">25</text>
+        <text x="10" y="225" font-size="16" fill="#636e72">50</text>
+        <text x="10" y="155" font-size="16" fill="#636e72">75</text>
+        <text x="10" y="85" font-size="16" fill="#636e72">100</text>
+        <!-- X-axis labels (8 weeks: May W1–W4, Jun W1–W4) -->
+        <text x="70" y="390" font-size="16" fill="#636e72">May W1</text>
+        <text x="150" y="390" font-size="16" fill="#636e72">May W2</text>
+        <text x="230" y="390" font-size="16" fill="#636e72">May W3</text>
+        <text x="310" y="390" font-size="16" fill="#636e72">May W4</text>
+        <text x="390" y="390" font-size="16" fill="#636e72">Jun W1</text>
+        <text x="470" y="390" font-size="16" fill="#636e72">Jun W2</text>
+        <text x="550" y="390" font-size="16" fill="#636e72">Jun W3</text>
+        <text x="630" y="390" font-size="16" fill="#636e72">Jun W4</text>
+        <!-- Build Success Rate (Blue Line) -->
+        <polyline fill="none" stroke="#0984e3" stroke-width="4"
+          points="70,80 150,100 230,120 310,110 390,100 470,90 550,80 630,70"/>
+        <!-- Deployment Frequency (Green Line) -->
+        <polyline fill="none" stroke="#00b894" stroke-width="4"
+          points="70,320 150,300 230,280 310,260 390,240 470,220 550,200 630,180"/>
+        <!-- Error Rate (Red Line) -->
+        <polyline fill="none" stroke="#e17055" stroke-width="4"
+          points="70,350 150,340 230,330 310,320 390,310 470,300 550,290 630,280"/>
+        <!-- Legends -->
+        <rect x="700" y="60" width="20" height="8" fill="#0984e3"/>
+        <text x="730" y="70" font-size="15" fill="#636e72">Build Success %</text>
+        <rect x="700" y="90" width="20" height="8" fill="#00b894"/>
+        <text x="730" y="100" font-size="15" fill="#636e72">Deployments</text>
+        <rect x="700" y="120" width="20" height="8" fill="#e17055"/>
+        <text x="730" y="130" font-size="15" fill="#636e72">Error Rate</text>
+      </svg>
+      <p style="font-size:1.1em; color:#636e72;">
+        <em>Weekly trends for Build Success Rate, Deployment Frequency, and Error Rate from May to June.</em>
+      </p>
+    </div>
+</body>
+</html>
