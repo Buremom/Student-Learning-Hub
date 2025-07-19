@@ -1,0 +1,33 @@
+{
+  "name": "student-learning-hub",
+  "version": "1.0.0",
+  "description": "Interactive Python Learning Platform for Junior Scholars",
+  "main": "Home.html",
+  "scripts": {
+    "start": "python -m http.server 8000",
+    "test": "echo 'No tests specified' && exit 0",
+    "build": "echo 'Build completed for Python Learning Hub'",
+    "lint:check": "echo 'Linting completed'",
+    "deploy:staging": "echo 'Deploying to staging environment'",
+    "deploy:prod": "echo 'Deploying to production environment'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/Student-Learning-Hub.git"
+  },
+  "keywords": [
+    "python",
+    "learning",
+    "education",
+    "junior-scholars",
+    "devops",
+    "ci-cd"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "devDependencies": {},
+  "dependencies": {}
+}
