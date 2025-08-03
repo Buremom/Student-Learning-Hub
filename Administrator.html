@@ -42,7 +42,7 @@
             background: #0984e3;
             color: #fff;
             font-weight: bold;
-            cursor: pointer;
+            cursor: default;
         }
         button:hover {
             background: #00b894;
@@ -66,15 +66,41 @@
             border: 1px solid #fff;
             padding: 6px 12px;
             border-radius: 4px;
-            cursor: pointer;
+            cursor: default;
         }
         #user-list button:hover, #lesson-list button:hover {
             background: #fff;
             color: #333;
         }
+
+        /* Logout button hover effect */
+        #logout-btn:hover {
+            background: #d63031 !important;
+            transform: scale(1.1);
+        }
+        
+        #welcome-admin {
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
     </style>
 </head>
 <body>
+    <!-- Logout Button - Add this section -->
+    <div id="admin-header" style="position: fixed; top: 20px; right: 20px; z-index: 1000;">
+        <button id="logout-btn" 
+                style="display: none; background: #e17055; color: #fff; border: none; border-radius: 50%; 
+                       width: 50px; height: 50px; font-size: 1.2em; cursor: pointer; 
+                       box-shadow: 0 2px 10px rgba(0,0,0,0.3); transition: all 0.3s ease;"
+                title="Logout">
+            🚪
+        </button>
+        <div id="welcome-admin" style="display: none; background: rgba(0,0,0,0.7); color: #fff; 
+                                      padding: 8px 12px; border-radius: 6px; margin-bottom: 8px; 
+                                      font-size: 0.9em; text-align: center;">
+        </div>
+    </div>
+
     <div class="admin-container">
         <h1>Administrator Panel</h1>
 
@@ -121,7 +147,10 @@
         <ul id="announcement-list" style="list-style-type:none; padding:0; margin-top:10px;"></ul>
         <hr>
 
-        <button onclick="location.href='Home.html'" style="background:#636e72; color:#fff; border:none; border-radius:8px; padding:10px 28px; font-size:1.1em; font-weight:bold; cursor:pointer; margin-top:16px;">
+        <button onclick="location.href='Home.html'" style="background:#636e72; color:#fff; border:none; border-radius:8px; padding:10px 28px; font-size:1.1em; font-weight:bold; cursor:default;"
+            <!-- Or remove cursor entirely -->
+            <!-- style="background:#636e72; color:#fff; border:none; border-radius:8px; padding:10px 28px; font-size:1.1em; font-weight:bold;" -->
+            >
             Back to Home
         </button>
     </div>
@@ -202,9 +231,12 @@
         if (!localStorage.getItem('announcements')) {
             const sampleAnnouncements = [
                 {
-                    text: "Welcome to Python Learning Hub! Start with Lesson 1 to begin your journey.",
+                    title: "Welcome to Python Learning Hub!",
+                    content: "Welcome to Python Learning Hub! Start with Lesson 1 to begin your journey. Complete all 8 lessons to master Python fundamentals.",
+                    text: "Welcome to Python Learning Hub! Start with Lesson 1 to begin your journey. Complete all 8 lessons to master Python fundamentals.",
                     timestamp: new Date().toISOString(),
-                    id: Date.now()
+                    id: Date.now(),
+                    author: "Administrator"
                 }
             ];
             localStorage.setItem('announcements', JSON.stringify(sampleAnnouncements));
@@ -372,39 +404,134 @@
         if (!newTitle || newTitle.trim() === '') return;
         
         if (newTitle.length > 100) {
-            alert('Lesson title is too long! Please keep it under 100 characters.');
+            alert('⚠️ Lesson title is too long! Please keep it under 100 characters.');
             return;
         }
         
-        // Check if new title already exists
-        if (newTitle !== lesson.title && lessons.find(l => l.title.toLowerCase() === newTitle.toLowerCase())) {
-            alert('A lesson with this title already exists! Please choose a different title.');
+        const newContent = prompt('Edit lesson content:', lesson.content);
+        if (newContent === null) return; // Cancelled
+        
+        if (!newContent) {
+            alert('⚠️ Lesson content cannot be empty!');
             return;
         }
         
-        const newContent = prompt('Edit lesson content:', lesson.content || '');
-        if (newContent === null) return;
+        if (newContent.length < 50) {
+            const confirmShort = confirm('⚠️ The lesson content seems quite short (less than 50 characters).\n\nAre you sure you want to save this lesson?');
+            if (!confirmShort) {
+                return;
+            }
+        }
         
-        lessons[idx].title = newTitle.trim();
-        lessons[idx].content = newContent.trim();
-        lessons[idx].edited = new Date().toISOString();
+        // Check if new title already exists (excluding current lesson)
+        const titleExists = lessons.find((lesson, index) => 
+            index !== idx && lesson.title.toLowerCase() === newTitle.toLowerCase()
+        );
+        
+        if (titleExists) {
+            alert('⚠️ A lesson with this title already exists! Please choose a different title.');
+            return;
+        }
+        
+        // Save the changes
+        const originalTitle = lessons[idx].title;
+        
+        lessons[idx] = {
+            ...lessons[idx],
+            title: newTitle,
+            content: newContent,
+            edited: new Date().toISOString(),
+            editedBy: localStorage.getItem('currentUser') || 'Administrator',
+            editCount: (lessons[idx].editCount || 0) + 1
+        };
         
         localStorage.setItem('lessons', JSON.stringify(lessons));
         
+        // Refresh the display
         loadLessons();
-        showAdminNotification(`Lesson "${newTitle}" updated successfully!`, 'success');
+        updateDashboard();
+        
+        // Success message
+        showAdminNotification(
+            `✅ Lesson "${newTitle}" updated successfully!`,
+            'success'
+        );
+        
+        console.log('Lesson edit completed');
+    }
+
+    // Preview lesson function
+    function previewLesson() {
+        const title = document.getElementById('edit-lesson-title').value.trim();
+        const content = document.getElementById('edit-lesson-content').value.trim();
+        
+        if (!title && !content) {
+            alert('⚠️ No content to preview!');
+            return;
+        }
+        
+        // Create preview popup
+        const previewPopup = document.createElement('div');
+        previewPopup.style.cssText = `
+            position: fixed; top: 50px; right: 50px; width: 400px; max-height: 80%;
+            background: #fff; color: #333; padding: 20px; border-radius: 8px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3); z-index: 10001; overflow-y: auto;
+        `;
+        
+        previewPopup.innerHTML = `
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 2px solid #eee; padding-bottom: 10px;">
+                <h3 style="margin: 0; color: #2d3436;">👁️ Lesson Preview</h3>
+                <button onclick="this.parentElement.parentElement.remove()" 
+                        style="background: #e17055; color: #fff; border: none; border-radius: 50%;
+                               width: 30px; height: 30px; cursor: pointer;">
+                    ✕
+                </button>
+            </div>
+            
+            <div style="margin-bottom: 15px;">
+                <h2 style="color: #0984e3; margin: 0 0 10px 0;">${title || 'Untitled Lesson'}</h2>
+            </div>
+            
+            <div style="background: #f8f9fa; padding: 15px; border-radius: 6px; white-space: pre-wrap; line-height: 1.6;">
+                ${content || 'No content available'}
+            </div>
+            
+            <div style="margin-top: 15px; padding-top: 10px; border-top: 1px solid #eee; font-size: 0.9em; color: #666;">
+                <strong>Statistics:</strong><br>
+                Characters: ${(title + content).length}<br>
+                Words: ${(title + ' ' + content).trim().split(/\s+/).length}<br>
+                Lines: ${content.split('\n').length}
+            </div>
+        `;
+        
+        document.body.appendChild(previewPopup);
+        
+        // Auto-remove preview after 10 seconds
+        setTimeout(() => {
+            if (previewPopup.parentElement) {
+                previewPopup.remove();
+            }
+        }, 10000);
     }
 
     // USER MANAGEMENT
     function loadUsers() {
-        console.log('Loading users...');
+        console.log('Loading users - CLEAN VERSION...');
+        
         const userList = document.getElementById('user-list');
-        if (!userList) return;
+        if (!userList) {
+            console.error('User list element not found!');
+            return;
+        }
         
         userList.innerHTML = '';
         
+        // Get users from storage
         const adminUsers = JSON.parse(localStorage.getItem('user-admin')) || [];
         const regularUsers = JSON.parse(localStorage.getItem('other-users')) || [];
+        
+        console.log('Admin users:', adminUsers.length);
+        console.log('Regular users:', regularUsers.length);
         
         const allUsers = [
             ...adminUsers.map(user => ({...user, type: 'Admin', storage: 'user-admin'})),
@@ -413,25 +540,84 @@
         
         if (allUsers.length === 0) {
             const li = document.createElement('li');
-            li.innerHTML = '<span style="color:#aaa; font-style:italic;">No users found. Users will appear here when they register.</span>';
+            li.innerHTML = `
+                <div style="color:#e17055; padding: 16px; text-align: center; border: 2px dashed #e17055; border-radius: 8px;">
+                    <h3 style="margin-top: 0;">⚠️ No Users Found</h3>
+                    <p>No users are currently registered in the system.</p>
+                    <button onclick="createTestUsers()" style="background:#00b894; color:#fff; border:none; padding:12px 24px; border-radius:6px; cursor:default; font-weight:bold; margin:8px;">
+                        👥 Create Test Users
+                    </button>
+                    <a href="SignUp.html" style="background:#0984e3; color:#fff; padding:12px 24px; border-radius:6px; text-decoration:none; font-weight:bold; margin:8px;">
+                        ➕ Register New User
+                    </a>
+                </div>
+            `;
             userList.appendChild(li);
             return;
         }
         
+        // Add summary header
+        const summaryLi = document.createElement('li');
+        summaryLi.style.cssText = 'background: #2d3436; padding: 12px; border-radius: 6px; margin-bottom: 8px;';
+        summaryLi.innerHTML = `
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="color:#00b894; font-weight:bold;">
+                    📊 Total Users: ${allUsers.length} (${adminUsers.length} Admins, ${regularUsers.length} Regular)
+                </span>
+                <button onclick="refreshUsers()" style="background:#636e72; color:#fff; border:none; padding:6px 12px; border-radius:4px; cursor:pointer; font-weight:bold;">
+                    🔄 Refresh
+                </button>
+            </div>
+        `;
+        userList.appendChild(summaryLi);
+        
+        // Display each user
         allUsers.forEach((user, idx) => {
             const li = document.createElement('li');
+            li.style.cssText = `
+                display: flex; justify-content: space-between; align-items: center; 
+                padding: 12px; margin-bottom: 8px; background: #444; border-radius: 6px;
+                border-left: 4px solid ${user.type === 'Admin' ? '#ffe066' : '#00b894'};
+            `;
+            
             li.innerHTML = `
-                <span style="color:#fff;">
-                    <strong>${user.username}</strong> (${user.email}) - 
-                    <span style="color:${user.type === 'Admin' ? '#ffe066' : '#00b894'};">${user.type} User</span>
-                </span>
-                <span>
-                    <button onclick="editUser('${user.storage}', '${user.username}')" style="margin-right:8px;">Edit</button>
-                    <button onclick="deleteUser('${user.storage}', '${user.username}')">Delete</button>
-                </span>
+                <div style="flex: 1; color: #fff;">
+                    <div style="margin-bottom: 8px;">
+                        <strong style="font-size: 1.1em;">${user.username}</strong> 
+                        <span style="color:${user.type === 'Admin' ? '#ffe066' : '#00b894'}; font-weight:bold; margin-left: 8px;">
+                            ${user.type === 'Admin' ? '👑' : '👤'} ${user.type}
+                        </span>
+                    </div>
+                    <div style="font-size: 0.9em; color: #bbb; margin-bottom: 4px;">
+                        📧 ${user.email}
+                    </div>
+                    <div style="font-size: 0.85em; color: #aaa;">
+                        🔑 Password: <span style="font-family: monospace; background: #2d3436; padding: 2px 6px; border-radius: 3px;">••••••••</span>
+                        <button onclick="togglePassword('${user.storage}', '${user.username}', this)" 
+                                style="background: #636e72; color: #fff; border: none; padding: 2px 6px; border-radius: 3px; margin-left: 8px; font-size: 0.8em; cursor: pointer;">
+                            👁️ Show
+                        </button>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 4px; margin-left: 16px;">
+                    <button onclick="editUser('${user.storage}', '${user.username}')" 
+                            style="background:#0984e3; color:#fff; border:none; padding:6px 12px; border-radius:4px; cursor:pointer; font-size:0.9em;">
+                        ✏️ Edit
+                    </button>
+                    <button onclick="deleteUser('${user.storage}', '${user.username}')" 
+                            style="background:#d63031; color:#fff; border:none; padding:6px 12px; border-radius:4px; cursor:pointer; font-size:0.9em;">
+                        🗑️ Delete
+                    </button>
+                    <button onclick="resetPassword('${user.storage}', '${user.username}')" 
+                            style="background:#fdcb6e; color:#2d3436; border:none; padding:6px 12px; border-radius:4px; cursor:pointer; font-size:0.9em;">
+                        🔑 Reset
+                    </button>
+                </div>
             `;
             userList.appendChild(li);
         });
+        
+        updateDashboard();
     }
 
     function deleteUser(storageKey, username) {
@@ -455,18 +641,164 @@
         }
         
         const user = users[userIndex];
-        const newUsername = prompt('Edit username:', user.username);
-        if (!newUsername) return;
         
-        const newEmail = prompt('Edit email:', user.email);
-        if (!newEmail) return;
+        // Create enhanced edit popup
+        const editPopup = document.createElement('div');
+        editPopup.style.cssText = `
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            background: #2d3436; color: #fff; padding: 24px; border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.5); z-index: 10000; min-width: 400px;
+        `;
         
-        users[userIndex].username = newUsername;
-        users[userIndex].email = newEmail;
+        editPopup.innerHTML = `
+            <h3 style="color: #ffe066; margin-top: 0;">✏️ Edit User: ${username}</h3>
+            
+            <div style="margin-bottom: 16px;">
+                <label style="display: block; margin-bottom: 8px; color: #bbb;">Username:</label>
+                <input type="text" id="edit-username" value="${user.username}" 
+                       style="width: 100%; padding: 8px; border-radius: 4px; border: none; margin-bottom: 12px; background: #fff; color: #333;">
+            </div>
+            
+            <div style="margin-bottom: 16px;">
+                <label style="display: block; margin-bottom: 8px; color: #bbb;">Email:</label>
+                <input type="email" id="edit-email" value="${user.email}" 
+                       style="width: 100%; padding: 8px; border-radius: 4px; border: none; margin-bottom: 12px; background: #fff; color: #333;">
+            </div>
+            
+            <div style="margin-bottom: 16px;">
+                <label style="display: block; margin-bottom: 8px; color: #bbb;">Password:</label>
+                <input type="text" id="edit-password" value="${user.password || ''}" 
+                       style="width: 100%; padding: 8px; border-radius: 4px; border: none; margin-bottom: 12px; background: #fff; color: #333;">
+            </div>
+            
+            <div style="display: flex; gap: 8px; justify-content: flex-end; margin-top: 20px;">
+                <button onclick="saveUserChangesWithSync('${storageKey}', ${userIndex}, this.parentElement.parentElement)" 
+                        style="background:#00b894; color:#fff; border:none; padding:10px 20px; border-radius:4px; cursor:pointer; font-weight:bold;">
+                    💾 Save Changes
+                </button>
+                <button onclick="this.parentElement.parentElement.remove()" 
+                        style="background:#636e72; color:#fff; border:none; padding:10px 20px; border-radius:4px; cursor:pointer;">
+                    ❌ Cancel
+                </button>
+            </div>
+        `;
+        
+        document.body.appendChild(editPopup);
+    }
+
+    function saveUserChangesWithSync(storageKey, userIndex, popup) {
+        const newUsername = document.getElementById('edit-username').value.trim();
+        const newEmail = document.getElementById('edit-email').value.trim();
+        const newPassword = document.getElementById('edit-password').value.trim();
+        
+        if (!newUsername || !newEmail) {
+            alert('Username and email are required!');
+            return;
+        }
+        
+        if (!newPassword) {
+            alert('Password is required!');
+            return;
+        }
+        
+        let users = JSON.parse(localStorage.getItem(storageKey)) || [];
+        const oldUsername = users[userIndex].username;
+        
+        // Check if new username already exists (excluding current user)
+        const allUsers = [
+            ...JSON.parse(localStorage.getItem('user-admin')) || [],
+            ...JSON.parse(localStorage.getItem('other-users')) || []
+        ];
+        
+        if (newUsername !== oldUsername && allUsers.find(u => u.username === newUsername)) {
+            alert('Username already exists! Please choose a different one.');
+            return;
+        }
+        
+        // Update user data with sync timestamp
+        users[userIndex] = {
+            ...users[userIndex],
+            username: newUsername,
+            email: newEmail,
+            password: newPassword,
+            lastModified: new Date().toISOString(),
+            lastSync: new Date().toISOString(),
+            modifiedBy: localStorage.getItem('currentUser') || 'Administrator'
+        };
         
         localStorage.setItem(storageKey, JSON.stringify(users));
+        
+        // Update current user session if they changed their own username
+        const currentUser = localStorage.getItem('currentUser');
+        if (currentUser === oldUsername) {
+            localStorage.setItem('currentUser', newUsername);
+        }
+        
+        // Close popup and refresh
+        popup.remove();
         loadUsers();
-        showAdminNotification(`User "${newUsername}" updated successfully!`, 'success');
+        
+        showAdminNotification(`User "${newUsername}" updated and synchronized successfully!`, 'success');
+    }
+
+    function deleteUserWithSync(storageKey, username) {
+        const confirmDelete = confirm(`⚠️ Are you sure you want to delete user "${username}"?\n\nThis action cannot be undone and will remove all user data.`);
+        
+        if (confirmDelete) {
+            let users = JSON.parse(localStorage.getItem(storageKey)) || [];
+            const originalLength = users.length;
+            
+            users = users.filter(user => user.username !== username);
+            
+            if (users.length < originalLength) {
+                localStorage.setItem(storageKey, JSON.stringify(users));
+                
+                // Also remove from current user if it's the same
+                const currentUser = localStorage.getItem('currentUser');
+                if (currentUser === username) {
+                    localStorage.removeItem('currentUser');
+                    showAdminNotification('You have deleted your own account! Please log in again.', 'warning');
+                }
+                
+                loadUsers();
+                showAdminNotification(`User "${username}" deleted and synchronized successfully.`, 'warning');
+            } else {
+                showAdminNotification(`Failed to delete user "${username}". User may not exist.`, 'error');
+                loadUsers(); // Refresh to show current state
+            }
+        }
+    }
+
+    function resetPasswordWithSync(storageKey, username) {
+        const newPassword = prompt(`Enter new password for "${username}":`, 'temp123');
+        
+        if (newPassword && newPassword.trim()) {
+            let users = JSON.parse(localStorage.getItem(storageKey)) || [];
+            const userIndex = users.findIndex(user => user.username === username);
+            
+            if (userIndex !== -1) {
+                users[userIndex].password = newPassword.trim();
+                users[userIndex].passwordReset = true;
+                users[userIndex].resetDate = new Date().toISOString();
+                users[userIndex].resetBy = localStorage.getItem('currentUser') || 'Administrator';
+                users[userIndex].lastSync = new Date().toISOString();
+                
+                localStorage.setItem(storageKey, JSON.stringify(users));
+                loadUsers();
+                showAdminNotification(`Password reset for "${username}" and synchronized. New password: ${newPassword.trim()}`, 'success');
+            } else {
+                showAdminNotification(`User "${username}" not found! Refreshing user list...`, 'error');
+                loadUsers();
+            }
+        }
+    }
+
+    function promoteUserWithSync(storageKey, username) {
+        promoteUser(storageKey, username);
+    }
+
+    function demoteUserWithSync(storageKey, username) {
+        demoteUser(storageKey, username);
     }
 
     // ANNOUNCEMENTS
@@ -540,11 +872,14 @@
             
             let announcements = JSON.parse(localStorage.getItem('announcements')) || [];
             
+            // FIXED: Create announcement structure that works with tutorial.html
             const newAnnouncement = {
-                text: text,
+                title: text.length > 50 ? text.substring(0, 50) + '...' : text, // Extract title from first 50 chars
+                content: text, // Full text as content
+                text: text, // Keep for backward compatibility with admin panel
                 timestamp: new Date().toISOString(),
                 id: Date.now(),
-                author: 'Administrator'
+                author: localStorage.getItem('currentUser') || 'Administrator'
             };
             
             announcements.unshift(newAnnouncement);
@@ -554,7 +889,7 @@
             loadAnnouncements();
             updateDashboard();
             
-            showAdminNotification('Announcement posted successfully!', 'success');
+            showAdminNotification('Announcement posted successfully! It will now appear in the tutorial page.', 'success');
         };
     }
 
@@ -564,7 +899,7 @@
         
         if (!announcement) return;
         
-        const currentText = typeof announcement === 'string' ? announcement : announcement.text;
+        const currentText = announcement.content || announcement.text || '';
         const newText = prompt('Edit announcement:', currentText);
         
         if (newText !== null && newText.trim()) {
@@ -573,23 +908,21 @@
                 return;
             }
             
-            if (typeof announcements[idx] === 'string') {
-                announcements[idx] = {
-                    text: newText.trim(),
-                    timestamp: new Date().toISOString(),
-                    id: Date.now() + idx,
-                    author: 'Administrator',
-                    edited: true
-                };
-            } else {
-                announcements[idx].text = newText.trim();
-                announcements[idx].edited = true;
-                announcements[idx].editedAt = new Date().toISOString();
-            }
+            // FIXED: Update to new structure that works with tutorial.html
+            announcements[idx] = {
+                title: newText.length > 50 ? newText.substring(0, 50) + '...' : newText,
+                content: newText.trim(),
+                text: newText.trim(), // Keep for backward compatibility
+                timestamp: announcement.timestamp || new Date().toISOString(),
+                id: announcement.id || Date.now(),
+                author: announcement.author || localStorage.getItem('currentUser') || 'Administrator',
+                edited: true,
+                editedAt: new Date().toISOString()
+            };
             
             localStorage.setItem('announcements', JSON.stringify(announcements));
             loadAnnouncements();
-            showAdminNotification('Announcement updated successfully!', 'success');
+            showAdminNotification('Announcement updated successfully! Changes will appear in tutorial page.', 'success');
         }
     }
 
@@ -654,57 +987,454 @@
     }
 
     function setupUserSearch() {
-        const userSearchForm = document.querySelector('form');
-        if (!userSearchForm) return;
+    const userSearchForm = document.querySelector('form');
+    if (!userSearchForm) return;
+    
+    userSearchForm.onsubmit = function(e) {
+        e.preventDefault();
+        const search = document.getElementById('user-search').value.toLowerCase().trim();
         
-        userSearchForm.onsubmit = function(e) {
-            e.preventDefault();
-            const search = document.getElementById('user-search').value.toLowerCase().trim();
-            
-            if (!search) {
-                loadUsers();
-                return;
-            }
-            
-            // Implementation for user search...
-            showAdminNotification(`Searching for "${search}"...`, 'info');
-        };
-    }
-
-    // MAIN RELOAD FUNCTION
-    function reloadAll() {
-        console.log('Reloading all data...');
-        initializeSampleData();
-        loadUsers();
-        loadLessons();
-        loadAnnouncements();
-        updateDashboard();
-        console.log('All data reloaded');
-    }
-
-    // INITIALIZATION
-    window.onload = function() {
-        console.log('Administrator Panel Loading...');
+        if (!search) {
+            loadUsers(); // Show all users if search is empty
+            return;
+        }
         
-        // Setup all event handlers
-        setupLessonForm();
-        setupAnnouncementForm();
-        setupUserSearch();
+        // Get all users from both storages
+        const adminUsers = JSON.parse(localStorage.getItem('user-admin')) || [];
+        const regularUsers = JSON.parse(localStorage.getItem('other-users')) || [];
         
-        // Load all data
-        reloadAll();
+        const allUsers = [
+            ...adminUsers.map(user => ({...user, type: 'Admin', storage: 'user-admin'})),
+            ...regularUsers.map(user => ({...user, type: 'Regular', storage: 'other-users'}))
+        ];
         
-        // Show welcome message
-        setTimeout(() => {
-            const lessonCount = JSON.parse(localStorage.getItem('lessons') || '[]').length;
-            showAdminNotification(`Administrator panel loaded! Found ${lessonCount} lessons.`, 'success');
-        }, 1000);
+        // Filter users based on search term
+        const filteredUsers = allUsers.filter(user => 
+            user.username.toLowerCase().includes(search) || 
+            user.email.toLowerCase().includes(search) ||
+            user.type.toLowerCase().includes(search)
+        );
         
-        console.log('Administrator Panel Loaded Successfully');
+        // Display filtered results
+        displayFilteredUsers(filteredUsers, search);
+        showAdminNotification(`Found ${filteredUsers.length} user(s) matching "${search}"`, 'info');
     };
+}
+
+function displayFilteredUsers(filteredUsers, searchTerm) {
+    const userList = document.getElementById('user-list');
+    if (!userList) return;
+    
+    userList.innerHTML = '';
+    
+    if (filteredUsers.length === 0) {
+        const li = document.createElement('li');
+        li.innerHTML = `
+            <span style="color:#e17055; font-style:italic;">
+                No users found matching "${searchTerm}". 
+                <button onclick="loadUsers()" style="background:#0984e3; color:#fff; border:none; padding:4px 8px; border-radius:4px; cursor:pointer; margin-left:8px;">
+                    Show All Users
+                </button>
+            </span>
+        `;
+        userList.appendChild(li);
+        return;
+    }
+    
+    // Add "Show All" button at top
+    const showAllLi = document.createElement('li');
+    showAllLi.style.background = '#2d3436';
+    showAllLi.innerHTML = `
+        <span style="color:#00b894; font-weight:bold;">
+            🔍 Search Results: ${filteredUsers.length} user(s) found for "${searchTerm}"
+        </span>
+        <button onclick="clearUserSearch()" style="background:#636e72; color:#fff; border:none; padding:6px 12px; border-radius:4px; cursor:pointer;">
+            Show All Users
+        </button>
+    `;
+    userList.appendChild(showAllLi);
+    
+    // Display filtered users with highlighting
+    filteredUsers.forEach((user, idx) => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+            <span style="color:#fff;">
+                <strong>${highlightSearchTerm(user.username, searchTerm)}</strong> 
+                (${highlightSearchTerm(user.email, searchTerm)}) - 
+                <span style="color:${user.type === 'Admin' ? '#ffe066' : '#00b894'};">
+                    ${highlightSearchTerm(user.type, searchTerm)} User
+                </span>
+                ${user.password ? `<br><small style="color:#aaa;">Password: ${user.password}</small>` : ''}
+            </span>
+            <span>
+                <button onclick="editUser('${user.storage}', '${user.username}')" style="margin-right:8px;">Edit</button>
+                <button onclick="deleteUser('${user.storage}', '${user.username}')">Delete</button>
+                <button onclick="resetPassword('${user.storage}', '${user.username}')" style="background:#fdcb6e; color:#2d3436; margin-left:4px;">Reset Pass</button>
+            </span>
+        `;
+        userList.appendChild(li);
+    });
+}
+
+function highlightSearchTerm(text, searchTerm) {
+    if (!searchTerm) return text;
+    const regex = new RegExp(`(${searchTerm})`, 'gi');
+    return text.replace(regex, '<mark style="background:#fdcb6e; color:#2d3436; padding:1px 2px; border-radius:2px;">$1</mark>');
+}
+
+function clearUserSearch() {
+    document.getElementById('user-search').value = '';
+    loadUsers();
+    showAdminNotification('Showing all users', 'info');
+}
+
+// Add this function to ensure data consistency
+function synchronizeUserData() {
+    console.log('Synchronizing user data...');
+    
+    // Get current data
+    const adminUsers = JSON.parse(localStorage.getItem('user-admin')) || [];
+    const regularUsers = JSON.parse(localStorage.getItem('other-users')) || [];
+    
+    console.log('Current admin users:', adminUsers.length);
+    console.log('Current regular users:', regularUsers.length);
+    
+    // Return the current state without complex processing for now
+    return {
+        adminUsers: adminUsers,
+        regularUsers: regularUsers,
+        totalUsers: adminUsers.length + regularUsers.length
+    };
+}
+
+// MAIN RELOAD FUNCTION
+function reloadAll() {
+    console.log('Reloading all data...');
+    initializeSampleData();
+    loadUsers();
+    loadLessons();
+    loadAnnouncements();
+    updateDashboard();
+    console.log('All data reloaded');
+}
+
+// INITIALIZATION - Updated
+window.onload = function() {
+    console.log('Administrator Panel Loading...');
+    
+    // Initialize sample data
+    initializeSampleData();
+    
+    // Check authentication
+    checkAdminAuthentication();
+    
+    // Setup event handlers
+    setupLessonForm();
+    setupAnnouncementForm();
+    setupUserSearch();
+    
+    // Load all data
+    loadUsers();
+    loadLessons();
+    loadAnnouncements();
+    updateDashboard();
+    
+    // Show success message
+    setTimeout(() => {
+        showAdminNotification('Administrator panel loaded successfully!', 'success');
+    }, 1000);
+    
+    console.log('Administrator Panel Loaded Successfully');
+};
 
     // Auto-refresh every 30 seconds
     setInterval(updateDashboard, 30000);
+
+    // USER AUTHENTICATION MANAGEMENT
+    function checkAdminAuthentication() {
+        console.log('Checking admin authentication...');
+        const currentUser = localStorage.getItem('currentUser');
+        const logoutBtn = document.getElementById('logout-btn');
+        const welcomeAdmin = document.getElementById('welcome-admin');
+        
+        if (currentUser) {
+            console.log('User authenticated:', currentUser);
+            
+            // Show logout button and welcome message
+            if (logoutBtn) {
+                logoutBtn.style.display = 'block';
+                logoutBtn.onclick = handleAdminLogout;
+            }
+            
+            if (welcomeAdmin) {
+                welcomeAdmin.style.display = 'block';
+                welcomeAdmin.textContent = `👑 Admin: ${currentUser}`;
+            }
+            
+            showAdminNotification(`Welcome back, ${currentUser}! You have admin access.`, 'success');
+        } else {
+            console.log('No authenticated user found');
+            
+            // Hide logout button and welcome message
+            if (logoutBtn) logoutBtn.style.display = 'none';
+            if (welcomeAdmin) welcomeAdmin.style.display = 'none';
+            
+            showAdminNotification('Please log in to access administrator features.', 'warning');
+        }
+    }
+        
+    function handleAdminLogout() {
+        console.log('Admin logout initiated...');
+        
+        const currentUser = localStorage.getItem('currentUser');
+        const logoutBtn = document.getElementById('logout-btn');
+        
+        // Show logout confirmation
+        const confirmLogout = confirm(`Are you sure you want to log out, ${currentUser}?\n\nYou will be redirected to the home page.`);
+        
+        if (confirmLogout) {
+            // Change button appearance to show logout is processing
+            if (logoutBtn) {
+                logoutBtn.innerHTML = '⏳';
+                logoutBtn.style.background = '#95a5a6';
+                logoutBtn.disabled = true;
+            }
+            
+            // Clear user authentication
+            localStorage.removeItem('currentUser');
+            
+            // Show logout success message
+            showAdminNotification(`Goodbye, ${currentUser}! Redirecting to home page...`, 'info');
+            
+            // Create a logout overlay for smooth transition
+            const logoutOverlay = document.createElement('div');
+            logoutOverlay.style.cssText = `
+                position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+                background: rgba(0,0,0,0.8); z-index: 10001; display: flex;
+                align-items: center; justify-content: center; color: #fff;
+                font-size: 1.5em; font-weight: bold; text-align: center;
+            `;
+            logoutOverlay.innerHTML = `
+                <div>
+                    <p>Logging out...</p>
+                    <p style="font-size: 0.8em; color: #bbb;">You will be redirected shortly.</p>
+                </div>
+            `;
+            document.body.appendChild(logoutOverlay);
+            
+            // Redirect to home page after 2 seconds
+            setTimeout(() => {
+                window.location.href = 'Home.html';
+            }, 2000);
+        }
+    }
+
+    // CREATE TEST USERS FUNCTION - MISSING
+    function createTestUsers() {
+        console.log('Creating test users...');
+        
+        const sampleAdminUsers = [
+            { username: "admin", email: "admin@pythonhub.com", password: "admin123" }
+        ];
+        const sampleRegularUsers = [
+            { username: "student1", email: "student1@example.com", password: "pass123" },
+            { username: "student2", email: "student2@example.com", password: "pass456" },
+            { username: "testuser", email: "test@example.com", password: "test123" }
+        ];
+        
+        localStorage.setItem('user-admin', JSON.stringify(sampleAdminUsers));
+        localStorage.setItem('other-users', JSON.stringify(sampleRegularUsers));
+        
+        console.log('Test users created successfully');
+        loadUsers();
+        updateDashboard();
+        showAdminNotification('✅ Test users created successfully!', 'success');
+    }
+
+    // REFRESH USERS FUNCTION - MISSING
+    function refreshUsers() {
+        console.log('Refreshing user list...');
+        loadUsers();
+        showAdminNotification('🔄 User list refreshed!', 'info');
+    }
+
+    // TOGGLE PASSWORD FUNCTION - MISSING
+    function togglePassword(storageKey, username, button) {
+        const users = JSON.parse(localStorage.getItem(storageKey)) || [];
+        const user = users.find(u => u.username === username);
+        
+        if (!user) {
+            showAdminNotification('User not found!', 'error');
+            return;
+        }
+        
+        const passwordSpan = button.previousElementSibling;
+        
+        if (button.textContent.includes('Show')) {
+            passwordSpan.textContent = user.password || 'No password';
+            button.textContent = '🙈 Hide';
+            button.style.background = '#e17055';
+        } else {
+            passwordSpan.textContent = '••••••••';
+            button.textContent = '👁️ Show';
+            button.style.background = '#636e72';
+        }
+    }
+
+    // RESET PASSWORD FUNCTION - MISSING
+    function resetPassword(storageKey, username) {
+        const newPassword = prompt(`Enter new password for "${username}":`, 'temp123');
+        
+        if (newPassword && newPassword.trim()) {
+            let users = JSON.parse(localStorage.getItem(storageKey)) || [];
+            const userIndex = users.findIndex(user => user.username === username);
+            
+            if (userIndex !== -1) {
+                users[userIndex].password = newPassword.trim();
+                users[userIndex].passwordReset = true;
+                users[userIndex].resetDate = new Date().toISOString();
+                
+                localStorage.setItem(storageKey, JSON.stringify(users));
+                loadUsers();
+                showAdminNotification(`Password reset for "${username}". New password: ${newPassword.trim()}`, 'success');
+            } else {
+                showAdminNotification(`User "${username}" not found!`, 'error');
+            }
+        }
+    }
+
+    // SCAN FOR ALL USERS IN LOCALSTORAGE
+    function scanForAllUsers() {
+        console.log('Scanning localStorage for all users...');
+        
+        const foundUsers = [];
+        const userKeys = [];
+        
+        // Check all possible user storage patterns
+        for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
+            if (!key) continue;
+            
+            try {
+                const data = JSON.parse(localStorage.getItem(key));
+                
+                // Check if it's an array of users
+                if (Array.isArray(data) && data.length > 0 && data[0].username) {
+                    userKeys.push(key);
+                    foundUsers.push(...data.map(user => ({ ...user, source: key })));
+                }
+                // Check if it's a single user object
+                else if (data && data.username && (data.email || data.password)) {
+                    userKeys.push(key);
+                    foundUsers.push({ ...data, source: key });
+                }
+            } catch (e) {
+                // Skip invalid JSON
+            }
+        }
+        
+        console.log('Found user data in keys:', userKeys);
+        console.log('Total users found:', foundUsers.length);
+        
+        return { foundUsers, userKeys };
+    }
+
+    // SYNC USERS FROM SIGNUP TO ADMIN PANEL
+    function syncUsersFromSignup() {
+        console.log('Syncing users from signup system...');
+        
+        const { foundUsers } = scanForAllUsers();
+        
+        // Get current admin panel users
+        let adminUsers = JSON.parse(localStorage.getItem('user-admin')) || [];
+        let regularUsers = JSON.parse(localStorage.getItem('other-users')) || [];
+        
+        let syncedCount = 0;
+        
+        foundUsers.forEach(user => {
+            // Check if user already exists in admin panel
+            const existsInAdmin = adminUsers.find(u => u.username === user.username);
+            const existsInRegular = regularUsers.find(u => u.username === user.username);
+            
+            if (!existsInAdmin && !existsInRegular) {
+                // Add to regular users
+                regularUsers.push({
+                    username: user.username,
+                    email: user.email || '',
+                    password: user.password || 'temp123',
+                    syncedFrom: user.source,
+                    syncedAt: new Date().toISOString()
+                });
+                syncedCount++;
+            }
+        });
+        
+        // Save updated user lists
+        localStorage.setItem('user-admin', JSON.stringify(adminUsers));
+        localStorage.setItem('other-users', JSON.stringify(regularUsers));
+        
+        // Refresh display
+        loadUsers();
+        updateDashboard();
+        
+        showAdminNotification(`✅ Synced ${syncedCount} new users from signup system!`, 'success');
+        console.log(`Synced ${syncedCount} users`);
+    }
+
+    // DEBUG FUNCTION TO CHECK ALL STORAGE
+    function debugUserStorage() {
+        console.log('=== USER STORAGE DEBUG ===');
+        
+        // Check specific user storage keys
+        console.log('Admin users:', JSON.parse(localStorage.getItem('user-admin') || '[]'));
+        console.log('Regular users:', JSON.parse(localStorage.getItem('other-users') || '[]'));
+        
+        // Check all localStorage keys
+        console.log('All localStorage keys:', Object.keys(localStorage));
+        
+        // Check for any user-related data
+        for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
+            if (key && (key.includes('user') || key.includes('User') || key.includes('signup') || key.includes('registration'))) {
+                console.log(`Found user-related key: ${key}`);
+                try {
+                    const data = JSON.parse(localStorage.getItem(key));
+                    console.log(`Data in ${key}:`, data);
+                } catch (e) {
+                    console.log(`Raw data in ${key}:`, localStorage.getItem(key));
+                }
+            }
+        }
+        
+        // Scan for users
+        const { foundUsers, userKeys } = scanForAllUsers();
+        console.log('Scan results:', { foundUsers: foundUsers.length, userKeys });
+    }
+
+    // SHOW ALL USERS BUTTON FUNCTION
+    function showAllRegisteredUsers() {
+        console.log('Showing all registered users...');
+        
+        // First scan for users
+        debugUserStorage();
+        
+        // Then sync them
+        syncUsersFromSignup();
+        
+        // Show results
+        const { foundUsers } = scanForAllUsers();
+        
+        if (foundUsers.length === 0) {
+            showAdminNotification('❌ No users found in storage. Users may not have signed up yet.', 'warning');
+        } else {
+            showAdminNotification(`✅ Found and synced ${foundUsers.length} total users from signup system!`, 'success');
+        }
+    }
+
+    // Force initialize and load users
+    initializeSampleData();
+    loadUsers();
+updateDashboard();
     </script>
 </body>
 </html>
